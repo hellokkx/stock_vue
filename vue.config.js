@@ -12,6 +12,8 @@ module.exports = defineConfig({
           '^/api': '/'
         }
       }
-    }
+    },
+    historyApiFallback: true,
+    allowedHosts: "all",
   }
 })

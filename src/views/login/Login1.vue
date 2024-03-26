@@ -67,23 +67,24 @@
           <!--            注册表单-->
           <div  v-show="!isShow" class="registForm">
             <div style="flex: 1;display: flex;justify-content: center;align-items: center">
-              用户名:
               <el-input
                   placeholder="请输入用户名"
                   v-model="regUser.regUsername"
-                  style="width: 210px;margin-left: 22px"
+                  style="width: 250px;"
                   prefix-icon="el-icon-user" size="medium"
                   clearable
               >
               </el-input>
             </div>
             <div style="flex: 1;display: flex;justify-content: center;align-items: center">
-              密&nbsp;&nbsp;&nbsp;码:
-              <el-input placeholder="请输入密码" style="width: 210px;margin-left: 22px " prefix-icon="el-icon-lock" size="medium" v-model="regUser.regPwd" show-password></el-input>
+              <el-input placeholder="请输入密码" style="width: 250px;" prefix-icon="el-icon-lock" size="medium" v-model="regUser.regPwd" show-password></el-input>
             </div>
-            <div style="flex: 1;display: flex;justify-content: center;align-items: center;">
-              确认密码:
-              <el-input placeholder="请再次输入密码" style="width: 210px;margin-left: 10px" prefix-icon="el-icon-lock" size="medium" v-model="regUser.regRePwd" show-password></el-input>
+            <div style="flex: 1;display: flex;justify-content: center;align-items: center">
+              <el-input placeholder="请输入邮箱" style="width: 250px;" prefix-icon="el-icon-lock" size="medium" v-model="regUser.email"></el-input>
+            </div>
+            <div style="flex: 1;display: flex;justify-content: center;align-items: center">
+              <el-input placeholder="请输入验证码" style="width: 163px;margin-left: 10px" size="medium" v-model="regUser.captcha"></el-input>
+              <el-button type="primary" plain style="text-align: center;margin-left: 7px" size="small" @click="getCaptcha">获取验证码</el-button>
             </div>
 
           </div>
@@ -162,7 +163,7 @@
 // eslint-disable-next-line no-unused-vars
 import Cookies from 'js-cookie';
 import axios from "axios";
-import {login,register} from "@/api/index";
+import {login,register,getCaptcha} from "@/api/index";
 import request from "@/api/request"
 
 export default {
@@ -182,6 +183,8 @@ export default {
         regUsername:'',
         regRePwd:'',
         regPwd:'',
+        email:'',
+        captcha:'',
         selectValue:"",
       },
       styleObj:{
@@ -195,7 +198,6 @@ export default {
     }
   },
   created() {
-    this.loadInfoOfAdmin();
   },
   methods:{
     changeToRegiest(){
@@ -233,30 +235,36 @@ export default {
       }).catch(err=>{
         //异常处理
         console.log(err)
-        if(err.status==400){
-          this.$message.error(err.data)
-        }
-        else{
-          this.$message.error("登录失败")
-        }
+        this.$message.error(err.data)
       })
       // this.loginAdmin=true
       // this.$router.push("/")
     },
-    //加载管理员信息
-    loadInfoOfAdmin(){
-
+    //获取验证码
+    getCaptcha(){
+      getCaptcha({email:this.regUser.email}).then(res=>{
+        console.log(res)
+        if(res.code===200){
+          this.$message.success("验证码发送成功");
+        }
+      }).catch(err=>{
+        //异常处理
+        // console.log(err)
+        // this.$message.error("验证码发送失败")
+      })
     },
     //用户注册
     userRegister(){
       if(this.regUser.regUsername===""){
         this.$message.error("用户名不能为空！")
         return false
-      }else if(this.regUser.regPwd!=this.regUser.regRePwd){
-        this.$message.error("两次密码输入不同，请检查后重新注册！")
+      }
+      else if(this.regUser.regPwd===""){
+        this.$message.error("密码不能为空！")
         return false
-      }else{
-        register({password:this.regUser.regPwd,userAccount:this.regUser.regUsername}).then(res=>{
+      }
+      else{
+        register({password:this.regUser.regPwd,userAccount:this.regUser.regUsername,email:this.regUser.email,captcha:this.regUser.captcha}).then(res=>{
           console.log(res.code)
           if(res.code===200){
             this.loginAdmin=res.data
@@ -270,13 +278,8 @@ export default {
           }
         }).catch(err=>{
           //异常处理
-          console.log(err)
-          if(err.status==400){
-            this.$message.error(err.data)
-          }
-          else{
-            this.$message.error("注册失败")
-          }
+          // console.log(err)
+          this.$message.error(err.data)
         })
       }
 
@@ -407,7 +410,7 @@ export default {
   color: #409eff;
   font-weight: normal;
   font-size: 16px;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .registForm input{
