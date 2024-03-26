@@ -232,9 +232,9 @@ export default {
         }
       }).catch(err=>{
         //异常处理
-        console.log(err.status)
+        console.log(err)
         if(err.status==400){
-          this.$message.error("账号或密码错误!")
+          this.$message.error(err.data)
         }
         else{
           this.$message.error("登录失败")
@@ -270,12 +270,12 @@ export default {
           }
         }).catch(err=>{
           //异常处理
-          console.log(err.status)
+          console.log(err)
           if(err.status==400){
-            this.$message.error("用户已存在！")
+            this.$message.error(err.data)
           }
           else{
-            this.$message.error("登录失败")
+            this.$message.error("注册失败")
           }
         })
       }
