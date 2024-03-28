@@ -24,19 +24,28 @@ const routes = [
     name: 'Login2',
     component: ()=>import('@/views/login/Login2.vue'),
   },
+  {
+    path: '/person',
+    name: 'person',
+    component: ()=>import('@/views/user/persondetail.vue'),
+  },
     //------------------------1_Layout-------------------------
   {
     path: '/',
     name: 'Layout',
     component: Layout,
     redirect:'/home',
-    children:[
-      //------------------------2_HOME-------------------------
-      {path: 'home', name: 'Home', component: HomeView},
-      // ---------------------2_User-----------------------------
-      {path: 'userList', name: 'UserList', component: () => import('@/views/user/User.vue')},
-      {path: 'addUser', name: 'AddUser', component: () => import('@/views/user/AddUser.vue')},
 
+    //------------------------1_Layout下面子布局-------------------------
+    children:[
+      //------------------------2_HOME首页-------------------------
+      {path: 'home', name: 'home', component: HomeView},
+      // ---------------------2_User-----------------------------
+      {path: 'userList', name: 'userList', component: () => import('@/views/user/User.vue')},
+      {path: 'addUser', name: 'addUser', component: () => import('@/views/user/AddUser.vue')},
+
+      // ---------------------2_Class量化课堂-----------------------------
+      {path: '/class', name: 'class', component: ()=>import('@/views/class/class.vue'),},
 
 
     ]
