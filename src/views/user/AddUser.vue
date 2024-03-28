@@ -27,6 +27,8 @@ export default {
 </script>
 
 
-<!--el-form不显示-->
+<style scoped>
+
+</style>
 
 

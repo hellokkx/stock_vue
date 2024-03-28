@@ -19,6 +19,11 @@ const routes = [
     name: 'Login1',
     component: ()=>import('@/views/login/Login1.vue'),
   },
+  {
+    path: '/login2',
+    name: 'Login2',
+    component: ()=>import('@/views/login/Login2.vue'),
+  },
     //------------------------1_Layout-------------------------
   {
     path: '/',
@@ -52,7 +57,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to,from,next)=>{
-  if(to.path==='/login') next()
+  if(to.path==='/login1') next()
   // const admin=Cookies.get("admin")
   // if(!admin && to.path!=='/login') return next("/login") //强制退回到登录页面
   next()

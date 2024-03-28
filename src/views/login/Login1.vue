@@ -11,8 +11,8 @@
             appear
         >
           <!-- 标语 -->
-          <div v-show="isShow" class="title">
-            LOGIN
+          <div v-show="isShow" class="title" style="margin-top:30px">
+            账号登录
           </div>
         </transition>
         <transition
@@ -24,10 +24,10 @@
           <!-- 密码框和用户名框 -->
           <div v-show="isShow" class="pwdArea">
             <div style="flex: 1;justify-content: center;display: flex;align-items: center">
-              <el-input class="username" v-model="loginUser.name" style="width: 220px" prefix-icon="el-icon-user" size="medium" placeholder="用户名"></el-input>
+              <el-input class="username" v-model="loginUser.name" style="width: 220px" prefix-icon="el-icon-user" size="medium" placeholder="请输入用户名"></el-input>
             </div>
             <div style="flex: 1;justify-content: center;display: flex;align-items: center">
-              <el-input placeholder="密码"  v-model="loginUser.password" style="width: 220px" prefix-icon="el-icon-lock" size="medium" show-password></el-input>
+              <el-input placeholder="请输入密码"  v-model="loginUser.password" style="width: 220px" prefix-icon="el-icon-lock" size="medium" show-password></el-input>
             </div>
           </div>
         </transition>
@@ -44,7 +44,24 @@
 
           </div>
         </transition>
+
+
+<!--        忘记密码 点击注册-->
+        <transition
+            name="animate__animated animate__bounce"
+            enter-active-class="animate__fadeInUp"
+            leave-active-class="animate__zoomOut"
+            appear
+          >
+          <div class="ForgetandReg" v-show="isShow">
+            <div>
+              <el-link type="primary" @click="$router.push('/login2')">没有账号？点击注册</el-link>
+            </div>
+          </div>
+        </transition>
+
       </div>
+
       <!-- 注册表单 -->
       <div class="registArea">
         <transition
@@ -54,8 +71,8 @@
             appear
         >
           <!--  注册表头-->
-          <div v-show="!isShow" class="rigestTitle">
-            用户注册
+          <div v-show="!isShow" class="rigestTitle" style="margin-top: 30px">
+            邮箱登录
           </div>
         </transition>
         <transition
@@ -67,23 +84,10 @@
           <!--            注册表单-->
           <div  v-show="!isShow" class="registForm">
             <div style="flex: 1;display: flex;justify-content: center;align-items: center">
-              <el-input
-                  placeholder="请输入用户名"
-                  v-model="regUser.regUsername"
-                  style="width: 250px;"
-                  prefix-icon="el-icon-user" size="medium"
-                  clearable
-              >
-              </el-input>
+              <el-input placeholder="请输入邮箱" style="width: 230px;" prefix-icon="el-icon-message" size="medium" v-model="emailLog.email"></el-input>
             </div>
             <div style="flex: 1;display: flex;justify-content: center;align-items: center">
-              <el-input placeholder="请输入密码" style="width: 250px;" prefix-icon="el-icon-lock" size="medium" v-model="regUser.regPwd" show-password></el-input>
-            </div>
-            <div style="flex: 1;display: flex;justify-content: center;align-items: center">
-              <el-input placeholder="请输入邮箱" style="width: 250px;" prefix-icon="el-icon-lock" size="medium" v-model="regUser.email"></el-input>
-            </div>
-            <div style="flex: 1;display: flex;justify-content: center;align-items: center">
-              <el-input placeholder="请输入验证码" style="width: 163px;margin-left: 10px" size="medium" v-model="regUser.captcha"></el-input>
+              <el-input placeholder="请输入验证码" style="width: 143px;margin-left: 10px" prefix-icon="el-icon-lock" size="medium" v-model="emailLog.captcha"></el-input>
               <el-button type="primary" plain style="text-align: center;margin-left: 7px" size="small" @click="getCaptcha">获取验证码</el-button>
             </div>
 
@@ -95,12 +99,29 @@
             leave-active-class="animate__zoomOut"
             appear
         >
-          <!--            注册按钮-->
+          <!--            邮箱登录按钮-->
           <div  v-show="!isShow" class="registBtn">
-            <el-button type="primary" style="width:200px" @click="userRegister">注册</el-button>
+            <el-button type="primary" style="width:200px" @click="emailLogin">邮箱登录</el-button>
           </div>
         </transition>
+
+
+        <!--        忘记密码 点击注册-->
+        <transition
+            name="animate__animated animate__bounce"
+            enter-active-class="animate__fadeInUp"
+            leave-active-class="animate__zoomOut"
+            appear>
+          <div class="ForgetandReg" v-show="!isShow">
+            <div>
+              <el-link type="primary" @click="$router.push('/login2')">没有账号？点击注册</el-link>
+            </div>
+          </div>
+        </transition>
+
       </div>
+
+
       <!-- 信息展示界面 -->
       <div id="aaa" class="showInfo"
            :style="{
@@ -126,7 +147,7 @@
             </div>
             <!-- 欢迎图片 -->
             <div style="flex: 2">
-              <el-button type="primary"  style="border: 1px solid #ffffff;border-radius: 10px;margin-top: 30px;"  @click="changeToRegiest">还没有账户？点击注册</el-button>
+              <el-button type="primary"  style="border: 1px solid #ffffff;margin-top: 90px;"  @click="changeToRegiest">忘记账户？点击邮箱登录</el-button>
             </div>
           </div>
         </transition>
@@ -144,11 +165,11 @@
           <div v-show="!isShow" style="display: flex;flex-direction: column;align-items: center;justify-content: center;width: 100%;height: 100%">
             <!-- 欢迎语 -->
             <div style="flex: 2;display: flex;align-items: center;font-size: 26px;color: #FFFFFF;font-weight: bold">
-              欢迎注册
+              欢迎使用邮箱登录
             </div>
             <!-- 欢迎图片 -->
             <div style="flex: 2">
-              <el-button type="primary"  style=";border: 1px solid #ffffff;margin-top: 30px;border-radius: 7px" medium @click="changeToLogin">已有账户？点击登录</el-button>
+              <el-button type="primary"  style=";border: 1px solid #ffffff;margin-top: 90px" medium @click="changeToLogin">通过账户密码登录</el-button>
             </div>
           </div>
         </transition>
@@ -163,14 +184,16 @@
 // eslint-disable-next-line no-unused-vars
 import Cookies from 'js-cookie';
 import axios from "axios";
-import {login,register,getCaptcha} from "@/api/index";
+import {login, register, getCaptcha, emailLogin} from "@/api/index";
 import request from "@/api/request"
+import "@/assets/css/button.css"
 
 export default {
 
   name:'Login',
   data(){
     return{
+
       //看看用不用转成用户对象
       loginUser:{
         name:"",
@@ -179,17 +202,13 @@ export default {
 
       admins:{},
       ////看看用不用转成用户对象
-      regUser:{
-        regUsername:'',
-        regRePwd:'',
-        regPwd:'',
+      emailLog:{
         email:'',
         captcha:'',
-        selectValue:"",
       },
       styleObj:{
-        bordertoprightradius:'15px',
-        borderbottomrightradius: '15px',
+        bordertoprightradius:'0px',
+        borderbottomrightradius: '0px',
         bordertopleftradius:'0px',
         borderbottomleftradius:'0px',
         rightDis:'0px'
@@ -198,19 +217,20 @@ export default {
     }
   },
   created() {
+      this.load()
   },
   methods:{
     changeToRegiest(){
       this.styleObj.bordertoprightradius= '0px'
       this.styleObj.borderbottomrightradius='0px'
-      this.styleObj.bordertopleftradius='15px'
-      this.styleObj.borderbottomleftradius='15px'
+      this.styleObj.bordertopleftradius='0px'
+      this.styleObj.borderbottomleftradius='0px'
       this.styleObj.rightDis='50%'
       this.isShow = !this.isShow
     },
     changeToLogin(){
-      this.styleObj.bordertoprightradius= '15px'
-      this.styleObj.borderbottomrightradius='15px'
+      this.styleObj.bordertoprightradius= '0px'
+      this.styleObj.borderbottomrightradius='0px'
       this.styleObj.bordertopleftradius='0px'
       this.styleObj.borderbottomleftradius='0px'
       this.styleObj.rightDis='0px'
@@ -218,6 +238,10 @@ export default {
     },
     //用户登录
     UserLogin(){
+      if(this.loginUser.name===""){
+        this.$message.error("用户名不能为空!")
+      }
+
       login({ password: this.loginUser.password, userAccount: this.loginUser.name }).then(res=>{
         // console.log(res.code)
         if(res.code===200){
@@ -240,9 +264,10 @@ export default {
       // this.loginAdmin=true
       // this.$router.push("/")
     },
+
     //获取验证码
     getCaptcha(){
-      getCaptcha({email:this.regUser.email}).then(res=>{
+      getCaptcha({email:this.emailLog.email}).then(res=>{
         console.log(res)
         if(res.code===200){
           this.$message.success("验证码发送成功");
@@ -253,25 +278,23 @@ export default {
         // this.$message.error("验证码发送失败")
       })
     },
-    //用户注册
-    userRegister(){
-      if(this.regUser.regUsername===""){
-        this.$message.error("用户名不能为空！")
+
+    //邮箱登录
+    emailLogin(){
+      if(this.emailLog.email===""){
+        this.$message.error("邮箱不能为空！")
         return false
       }
-      else if(this.regUser.regPwd===""){
-        this.$message.error("密码不能为空！")
+      else if(this.emailLog.captcha===""){
+        this.$message.error("验证码不能为空！")
         return false
       }
       else{
-        register({password:this.regUser.regPwd,userAccount:this.regUser.regUsername,email:this.regUser.email,captcha:this.regUser.captcha}).then(res=>{
+        emailLogin({email:this.emailLog.email,captcha:this.emailLog.captcha}).then(res=>{
           console.log(res.code)
           if(res.code===200){
-            this.loginAdmin=res.data
             console.log(res)
-            // this.onSuccess();
-            // this.$router.push("/login1")
-            this.$message.success("注册成功")
+            this.$message.success("登录成功")
           }
           else{
             this.$notify.error(res.msg)
@@ -283,20 +306,23 @@ export default {
         })
       }
 
+    },
+    load(){
+      // location.reload();
     }
   },
 
 }
 </script>
 
-<style>
+<style scoped>
 /* @import '../assets/css/Login.css' */
 .base{
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url("images/background.png");
+  background-image: url("images/background3.png");
   background-size: 100%;
 }
 .loginAndRegist{
@@ -307,11 +333,11 @@ export default {
   overflow: hidden;
 }
 .loginArea{
-  background-color: rgba(255,255,255,0.8);
-  border-top-left-radius: 15px;
-  border-bottom-left-radius: 15px;
+  background-color: rgba(255,255,255,1);
+  /*border-top-left-radius: 15px;*/
+  /*border-bottom-left-radius: 15px;*/
   height: 400px;
-  width: 350px;
+  width: 340px;
   z-index: 1;
   display: flex;
   flex-direction: column;
@@ -319,11 +345,11 @@ export default {
   overflow: hidden;
 }
 .registArea{
-  border-top-right-radius: 15px;
-  border-bottom-right-radius: 15px;
+  /*border-top-right-radius: 15px;*/
+  /*border-bottom-right-radius: 15px;*/
   height: 400px;
   width: 350px;
-  background-color: rgba(255,255,255,0.8);
+  background-color: rgba(255,255,255,1);
   z-index: 1;
   display: flex;
   flex-direction: column;
@@ -331,21 +357,22 @@ export default {
   align-items: center;
 }
 .showInfo{
-  border-top-right-radius: 15px;
-  border-bottom-right-radius: 15px;
+  /*border-top-right-radius: 15px;*/
+  /*border-bottom-right-radius: 15px;*/
   position: absolute;
   height: 400px;
   width: 350px;
   z-index:2;
   top: 0;
   right: 0;
-  background-image: url("images/welcome.png");
+  background-image: url("images/welcome1.png");
   background-size:100%;
   /*background-color: rgba(0,0,0,0);*/
+  background-position: 0px 30px;
 }
 .showInfo:hover{
   background-size: 100%;
-  background-position: -30px -30px;
+  background-position: -30px 0px;
 }
 .title{
   width: 70%;
@@ -369,14 +396,15 @@ export default {
   flex-direction: column;
   display: flex;
   flex-direction: column;
-  margin-top: 50px;
+  margin-top: 20px;
+  margin-bottom: 5px;
 
 
 }
 .pwdArea input{
   outline: none;
   height: 30%;
-  border-radius:13px ;
+  border-radius:7px ;
   padding-left: 10px;
   font-size: 12px;
   border: 1px solid gray;
@@ -390,7 +418,7 @@ export default {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  margin-bottom: 50px;
+  margin-bottom: 0px;
 }
 .rigestTitle{
   width: 70%;
@@ -410,13 +438,14 @@ export default {
   color: #409eff;
   font-weight: normal;
   font-size: 16px;
-  margin-top: 10px;
+  margin-top: 20px;
+  margin-bottom: 5px;
 }
 
 .registForm input{
   outline: none;
   height: 30%;
-  border-radius:13px ;
+  border-radius:7px ;
   padding-left: 10px;
   font-size: 12px;
   border: 1px solid gray;
@@ -432,6 +461,16 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 0px;
+}
+
+.ForgetandReg{
+  display: flex;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 50px;
+  color: #409eff;
+  font-size: 12px;
 }
 
 

@@ -16,7 +16,12 @@
           </span>
           <el-dropdown-menu slot="dropdown" style="margin-top:-5px;">
             <el-dropdown-item>
-              <div style="width: 50px;text-align: center;" @click="logout">
+              <div style="width: 70px;text-align: center;" @click="logout">
+                个人中心
+              </div>
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <div style="width: 70px;text-align: center;" @click="logout">
                 退出
               </div>
             </el-dropdown-item>
@@ -42,10 +47,50 @@
             <span>首页</span>
           </el-menu-item>
 
-          <el-menu-item index="/addUser">用户添加</el-menu-item>
-          <el-menu-item index="/userList">用户列表</el-menu-item>
+          <el-submenu index="1">
+            <template slot="title">
+              <i class="el-icon-location"></i>
+              <span>大盘指数分析</span>
+            </template>
+            <el-menu-item index="/addUser">上证指数</el-menu-item>
+            <el-menu-item index="2">深证指数</el-menu-item>
+            <el-menu-item index="3">创业板指数</el-menu-item>
+            <el-menu-item index="4">科创50</el-menu-item>
+          </el-submenu>
 
+          <el-submenu index="2">
+            <template slot="title">
+              <i class="el-icon-location"></i>
+              <span>自选股</span>
+            </template>
+            <el-menu-item index="2">自定义自选股自组合1</el-menu-item>
+            <el-menu-item index="2">自定义自选股自组合2</el-menu-item>
+          </el-submenu>
 
+          <el-submenu index="3">
+            <template slot="title">
+              <i class="el-icon-location"></i>
+              <span>走势预测</span>
+            </template>
+            <el-menu-item index="3">自选股走势预测</el-menu-item>
+            <el-menu-item index="3">自定义走势预测</el-menu-item>
+          </el-submenu>
+
+          <el-submenu index="4">
+            <template slot="title">
+              <i class="el-icon-location"></i>
+              <span>精选策略</span>
+            </template>
+            <el-menu-item index="3">初级策略</el-menu-item>
+            <el-menu-item index="3">中级策略</el-menu-item>
+            <el-menu-item index="3">高级策略</el-menu-item>
+            <el-menu-item index="3">VIP策略</el-menu-item>
+          </el-submenu>
+
+          <el-menu-item index="5">
+              <i class="el-icon-location"></i>
+              <span>量化课堂</span>
+          </el-menu-item>
 
 
 
