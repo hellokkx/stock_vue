@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/home/HomeView.vue'
-import Layout from '../views/home/Layout.vue'
+import Layout from '../views/Layout.vue'
 import Cookies from "js-cookie";
 
 
@@ -37,8 +37,11 @@ const routes = [
       {path: 'userList', name: 'UserList', component: () => import('@/views/user/User.vue')},
       {path: 'addUser', name: 'AddUser', component: () => import('@/views/user/Index.vue')},
       //---------------------2_SelfStock--------------------------
-      {path: 'stockList', name: 'StockList', component: () => import('@/views/home/StockList.vue')},
-      {path: 'selfSelectStock', name: 'SelfStock', component: () => import('@/views/home/SelfSelectStock.vue')},
+      {path: 'stockList', name: 'StockList', component: () => import('@/views/stock/StockList.vue')},
+      {path: 'selfSelectStock', name: 'SelfStock', component: () => import('@/views/stock/SelfSelectStock.vue')},
+      //---------------------2_Star--------------------------
+      {path: 'starList', name: 'starList', component: () => import('@/views/star/StarList.vue')},
+      // {path: 'selfStar', name: 'selfStar', component: () => import('@/views/star/StockList.vue')},
     ]
   },
   {

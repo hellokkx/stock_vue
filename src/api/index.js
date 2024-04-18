@@ -15,3 +15,8 @@ export const register = ({ password, userAccount, email ,captcha}) => post('/reg
 //获取验证码
 export const getCaptcha = ({email})=>get('/sendCaptcha',{email})
 
+//获取股票数据
+export const getStocklist =()=>get('/stockList')
+
+//获取收藏数据
+export const getCollectionlist =({userId})=>get('/getCollection',{userId})

@@ -4,7 +4,7 @@
     <div style="height: 70px;line-height: 70px;background-color:white;margin-bottom: 2px;display: flex">
 
       <div style="width: 500px">
-        <img src="../../assets/pook.jpg" alt="" style="width: 40px;margin-left: 30px;position: relative;top: 10px;left:20px">
+        <img src="../assets/pook.jpg" alt="" style="width: 40px;margin-left: 30px;position: relative;top: 10px;left:20px">
         <span style="margin-left: 40px; font-size: 24px">理财大师</span>
       </div>
       <div style="flex: 1;text-align: right;margin-right: 20px">
@@ -56,6 +56,15 @@
             <el-menu-item index="2">深证指数</el-menu-item>
             <el-menu-item index="3">创业板指数</el-menu-item>
             <el-menu-item index="4">科创50</el-menu-item>
+          </el-submenu>
+
+          <el-submenu index="6">
+            <template slot="title">
+              <i class="el-icon-location"></i>
+              <span>收藏股票</span>
+            </template>
+            <el-menu-item index="/starList">收藏股票</el-menu-item>
+<!--            <el-menu-item index="/stockList">添加收藏</el-menu-item>-->
           </el-submenu>
 
           <el-submenu index="2">

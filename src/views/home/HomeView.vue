@@ -8,8 +8,23 @@
     <!-- Middle Section - Strategy Selection -->
     <div class="strategy-section">
       <h2 class="strategy-title">策略精选</h2>
+
       <div class="strategy-images">
-        <img :src="strategyImage" alt="strategy" />
+
+        <div style="display: flex;flex-direction: column;align-items: center;justify-content: center; text-align: center;margin: 30px">
+          <img :src="strategy1" alt="strategy" style="width: 300px" />
+          <el-button type="primary" size="small" style="margin-top: 20px">获取源码</el-button>
+        </div>
+
+        <div style="display: flex;flex-direction: column;align-items: center;justify-content: center; text-align: center;margin: 30px">
+        <img :src="strategy1" alt="strategy" style="width: 300px" />
+          <el-button type="primary" size="small" style="margin-top: 20px">获取源码</el-button>
+        </div>
+
+        <div style="display: flex;flex-direction: column;align-items: center;justify-content: center; text-align: center;margin: 30px">
+        <img :src="strategy1" alt="strategy" style="width: 300px" />
+          <el-button type="primary" size="small" style="margin-top: 20px">获取源码</el-button>
+        </div>
       </div>
     </div>
     <!-- Bottom Section - bottom -->
@@ -38,7 +53,9 @@ export default {
   name: "Home",
   data() {
     return {
-      strategyImage: require('@/views/home/image/strategy.png')
+      strategy1: require('@/views/home/image/strategy1.png'),
+      strategy2: require('@/views/home/image/strategy2.png'),
+      strategy3: require('@/views/home/image/strategy3.png')
     }
   }
 }
@@ -48,35 +65,37 @@ export default {
 .home-view {
   display: flex;
   flex-direction: column;
-  max-width: 900px;
+  width: 100%;
+  /*max-width: 1000px;*/
   padding: 0px;
-  margin-right: 50px;
+  margin-right: 10px;
 
 }
 
 .intro-section {
   height: 230px;
+  width: 100%;
   background-image: url("image/home1.png");
   background-size: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: center; /* 水平居中 */
+  justify-content: center; /* 垂直居中 */
+  text-align: center; /* 对齐文本内容 */
 }
 
 .intro-title {
   font-size: 32px;
   color: white;
-  text-align: left;
-  margin-left: 400px;
+  text-align: center;
 }
 
 .intro-text {
   font-weight: lighter;
   font-size: 16px;
   color: white;
-  text-align: left;
-  margin-left: 400px;
+  text-align: center;
+  /*margin-left: 400px;*/
 }
 
 .strategy-title {
@@ -99,7 +118,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 70%;
+  height: 85%;
 }
 
 .strategy-images img {
