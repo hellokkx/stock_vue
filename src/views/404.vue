@@ -7,7 +7,7 @@
       未找到页面
     </div>
     <el-button type="text" style="margin-top: 20px;font-size: 20px" @click="$router.push('/')">
-      返回主页
+      返回用户主页
     </el-button>
   </div>
 </template>

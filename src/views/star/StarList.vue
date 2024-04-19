@@ -15,22 +15,24 @@
       </el-button>
     </div>
 
-    <!--stripe显示斑马纹-->
-    <el-table :data="tableData" stripe row-key="oid" default-expand-all>
-      <el-table-column prop="userid" label="用户id"></el-table-column>
-      <el-table-column prop="collectionid" label="收藏id"></el-table-column>
-      <el-table-column prop="tscode" label="收藏股票代码"></el-table-column>
-      <el-table-column prop="collectionname" label="收藏股票名称"></el-table-column>
-      <el-table-column prop="symbol" label="全球唯一标识符"></el-table-column>
-      <!--      <el-table-column prop="detail" label="详情"></el-table-column>-->
+    <div class="table">
+      <!--stripe显示斑马纹-->
+      <el-table :data="tableData" stripe row-key="oid" border default-expand-all>
+<!--        <el-table-column prop="userid" label="用户id"></el-table-column>-->
+        <el-table-column prop="collectionid" label="收藏id"></el-table-column>
+        <el-table-column prop="symbol" label="收藏股票代码"></el-table-column>
+        <el-table-column prop="collectionname" label="收藏股票名称"></el-table-column>
+        <!--      <el-table-column prop="detail" label="详情"></el-table-column>-->
 
-      <el-table-column label="操作" align="left" header-align="50px">
-        <template v-slot="scope">
-          <el-button type="danger" plain @click="del(scope)">删除</el-button>
-        </template>
-      </el-table-column>
+        <el-table-column label="操作" align="left" header-align="50px">
+          <template v-slot="scope">
+            <el-button type="danger" plain @click="del(scope.row.symbol,scope.row.userid)">删除</el-button>
+          </template>
+        </el-table-column>
 
-    </el-table>
+      </el-table>
+    </div>
+
 
     <div style="margin-top: 20px">
       <el-pagination
@@ -51,7 +53,7 @@
 // @ is an alias to /src
 import request from "@/utils/request";
 import Cookies from "js-cookie";
-import {getCollectionlist} from "@/api";
+import {deleteCollection, getCaptcha, getCollection, getCollectionlist} from "@/api";
 
 export default {
   name: 'StarList',
@@ -63,34 +65,28 @@ export default {
       params:{
         pageNum:1,
         pageSize:10,
-        userid:'4',
+        userId:"2",
         name:Cookies.get('user') ? JSON.parse(Cookies.get('user')).username:{},
       },
-      userid:'4',
+      userid:4,
     }
   },
   created() {
     this.load()
-    this.getCollection()
   },
   methods: {
 
     load(){
-
+      this.getCollection()
     },
     getCollection(){
-      console.log(this.params.userid)
-      getCollectionlist(4).then(res=>{
-        // console.log(res.code)
+      console.log("here is userid"+this.user.userid)
+      var userId=this.user.userid
+      getCollection({userId}).then(res=>{
+        console.log(res)
         if(res.code===200){
-          console.log(res)
-          this.tableData=res.stockList
-          console.log(res.data)
-          console.log(this.tableData)
-          // this.$message.success("查询成功")
-        }
-        else{
-          this.$notify.error(res.msg)
+          this.tableData=res.collection
+          // this.$message.success("查询成功");
         }
       }).catch(err=>{
         //异常处理
@@ -102,12 +98,25 @@ export default {
       this.params={
         pageNum:1,
         pageSize:10,
-        name:Cookies.get('user') ? JSON.parse(Cookies.get('user')).username:{},
       }
       this.load()
     },
-    del(){
 
+    //用户删除股票
+    del(symbol,userId){
+      // var userId=this.user.userid
+      deleteCollection({symbol,userId}).then(res=>{
+        console.log(res)
+        if(res.code===200){
+          this.tableData=res.collection
+          this.$message.success("取消收藏成功");
+          this.load()
+        }
+      }).catch(err=>{
+        //异常处理
+        console.log(err)
+        this.$message.error(err.data)
+      })
     },
     handleCurrentChange(pageNum){
       //点击分页按钮触发分页
@@ -120,4 +129,7 @@ export default {
 
 <style scoped>
 
+.table{
+  width: 60%;
+}
 </style>

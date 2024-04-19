@@ -15,14 +15,9 @@ const routes = [
     component: ()=>import('@/views/login/Login.vue'),
   },
   {
-    path: '/login1',
-    name: 'Login1',
-    component: ()=>import('@/views/login/Login1.vue'),
-  },
-  {
-    path: '/login2',
+    path: '/register',
     name: 'Login2',
-    component: ()=>import('@/views/login/Login2.vue'),
+    component: ()=>import('@/views/login/Register.vue'),
   },
     //------------------------1_Layout-------------------------
   {
@@ -47,7 +42,32 @@ const routes = [
   {
     path:"*",
     component:()=>import('@/views/404.vue')
-  }
+  },
+
+
+
+    //--------------------------Admin-------------------------
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: ()=>import('@/views/admin/AdminLayout.vue'),
+    redirect:'/admin/adminhome',
+
+    children:[
+      //------------------------2_HOME-------------------------
+      {path: 'adminhome', name: 'Home', component: ()  => import('@/views/admin/AdminHome.vue')},
+      // ---------------------2_User-----------------------------
+      {path: 'User', name: 'User', component: () => import('@/views/user/User.vue')},
+      {path: 'addUser', name: 'AddUser', component: () => import('@/views/user/Index.vue')},
+      //---------------------2_Stock--------------------------
+      {path: 'stockList', name: 'StockList', component: () => import('@/views/stock/StockList.vue')},
+      {path: 'starList', name: 'starList', component: () => import('@/views/star/StarList.vue')},
+
+      //---------------------2_SelfStock--------------------------
+      {path: 'selfSelectStock', name: 'SelfStock', component: () => import('@/views/stock/SelfSelectStock.vue')},
+      {path: 'selfSelectStock2', name: 'SelfStock', component: () => import('@/views/stock/SelfSelectStock.vue')},
+    ]
+  },
 
 ]
 
@@ -60,7 +80,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to,from,next)=>{
-  if(to.path==='/login1') next()
+  if(to.path==='/login') next()
   // const admin=Cookies.get("admin")
   // if(!admin && to.path!=='/login') return next("/login") //强制退回到登录页面
   next()

@@ -56,19 +56,13 @@ import Cookies from 'js-cookie';
 import axios from "axios";
 import {login,register,getCaptcha} from "@/api/index";
 import request from "@/api/request"
+import md5 from 'js-md5'
 
 export default {
 
   name:'Login',
   data(){
     return{
-      //看看用不用转成用户对象
-      loginUser:{
-        name:"",
-        password:""
-      },
-
-      admins:{},
       ////看看用不用转成用户对象
       regUser:{
         regUsername:'',
@@ -85,7 +79,7 @@ export default {
   methods:{
     //返回登录界面
     backtoLogin(){
-      this.$router.push('/login1')
+      this.$router.push('/login')
     },
     //获取验证码
     getCaptcha(){
@@ -96,12 +90,11 @@ export default {
         getCaptcha({email:this.regUser.email}).then(res=>{
           console.log(res)
           if(res.code===200){
-            this.$message.error("验证码发送成功");
+            this.$message.success("验证码发送成功");
           }
         }).catch(err=>{
           //异常处理
-          // console.log(err)
-          // this.$message.error("验证码发送失败")
+          this.$message.error("验证码发送失败")
         })
       }
     },
@@ -120,14 +113,13 @@ export default {
         return false
       }
       else{
-        register({password:this.regUser.regPwd,userAccount:this.regUser.regUsername,email:this.regUser.email,captcha:this.regUser.captcha}).then(res=>{
+        register({password:md5(this.regUser.regPwd).substring(8, 24),userAccount:this.regUser.regUsername,email:this.regUser.email,captcha:this.regUser.captcha}).then(res=>{
           console.log(res.code)
           if(res.code===200){
             this.loginAdmin=res.data
             console.log(res)
-            // this.onSuccess();
-            // this.$router.push("/login1")
             this.$message.success("注册成功")
+            this.$router.push("/login")
           }
           else{
             this.$notify.error(res.msg)

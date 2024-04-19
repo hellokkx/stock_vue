@@ -8,13 +8,8 @@ axios.defaults.withCredentials = true;
 //请求头
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 //基础url
-axios.defaults.baseURL = 'https://183.232.249.91:11514/';
-// axios.defaults.baseURL = 'http://172.26.128.209:9171/';
-// axios.defaults.baseURL = 'http://192.168.31.220:9171/';
-// axios.defaults.baseURL = 'http://192.168.43.218:9171/';
-// axios.defaults.baseURL = 'http://172.29.15.211:9171/';  //lzw
-// axios.defaults.baseURL = 'http://172.29.26.249:9171/';  //wqy
-// axios.defaults.baseURL = import.meta.env.VITE_BASE_API_URL;  //lzw
+axios.defaults.baseURL = 'http://124.71.22.245:11451/';
+// axios.defaults.baseURL = 'https://183.232.249.91:11514/';
 
 
 //响应拦截器
