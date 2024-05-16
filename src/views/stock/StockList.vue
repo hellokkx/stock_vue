@@ -1,6 +1,7 @@
 <template>
   <div>
 
+
     <div class="container">
       <div class="handle-box">
         <el-button
@@ -13,19 +14,7 @@
             class="handle-add mr10"
             @click="deleteStockList"
         >批量删除</el-button>
-        <el-select  v-model="selectCode"
-                    clearable
-                    filterable
-                    class="getSelect"
-                    @change="getSelectValue()"
-                    placeholder="请选择">
-          <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-          </el-option>
-        </el-select>
+
       </div>
       <el-table
           :data="tableData"
@@ -46,28 +35,28 @@
 
         <el-table-column label="添加收藏" align="left" header-align="50px">
           <template v-slot="scope">
-            <el-button type="success" plain @click="add(scope.row.symbol)">收藏</el-button>
+            <el-button type="success" plain @click="add(scope.row)">收藏</el-button>
           </template>
         </el-table-column>
 
       </el-table>
-      <div class="pagination">
-        <el-pagination
-            background
-            layout="total, prev, pager, next"
-            :current-page="query.pageIndex"
-            :page-size="query.pageSize"
-            :total="pageTotal"
-            @current-change="handlePageChange"
-        ></el-pagination>
-      </div>
+<!--      <div class="pagination">-->
+<!--        <el-pagination-->
+<!--            background-->
+<!--            layout="total, prev, pager, next"-->
+<!--            :current-page="query.pageIndex"-->
+<!--            :page-size="query.pageSize"-->
+<!--            :total="pageTotal"-->
+<!--            @current-change="handlePageChange"-->
+<!--        ></el-pagination>-->
+<!--      </div>-->
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-import {addCollection, getStocklist} from "@/api";
+import {addToCollection, getStocklist} from "@/api";
 import Cookies from "js-cookie";
 
 export default {
@@ -75,42 +64,24 @@ export default {
   data() {
     return {
       user:Cookies.get('user')?JSON.parse(Cookies.get('user')):{},
-      query: {
-        address: '上海股票',
-        pageIndex: 1,
-        pageSize: 10
-      },
       //表格属性
-      stockCode: 'sh600297',
       tableData: [],
-      multipleSelection: [],
-      pageTotal: 1,
-      form: {},
-      idx: -1,
-      options: '',
-      selectCode: '',
-      //股票属性
-      area:'',
-      industry:'',
-      listdate: '',
-      name:'',
-      symbol:'',
-      tsCode: ''
+
     };
   },
   created() {
     // this.getVolumes();
+    this.token = localStorage.getItem('token')
+    console.log("token"+this.token)
     this.getData();
   },
   methods: {
     //获取股票数据
     getData() {
       getStocklist().then(res=>{
-        // console.log(res.code)
         if(res.code===200){
           console.log(res)
-          this.tableData=res.stockList
-          // this.$message.success("查询成功")
+          this.tableData=res.response
 
           // 遍历数据，处理日期属性
           this.tableData.forEach(item => {
@@ -137,21 +108,43 @@ export default {
       })
     },
 
-    add(symbol){
-      var userId=this.user.userid
-      addCollection({symbol,userId}).then(res=>{
-        // console.log(res.code)
-        if(res.code===200){
-          console.log(res)
-          this.$message.success("收藏成功")
-          this.getData()
+    //将某只股票添加到收藏夹内
+    add(row) {
+      this.$prompt('请输入收藏夹ID', '添加至收藏夹', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputPattern: /^\d+$/,
+        inputErrorMessage: '收藏夹ID必须为数字',
+        inputPlaceholder: '请输入收藏夹ID'
+      }).then(({ value: collectionId }) => {
+        // 检查收藏夹ID是否为空
+        if (!collectionId.trim()) {
+          this.$message.error('收藏夹ID不能为空');
+          // return;
         }
-      }).catch(err=>{
-        //异常处理
-        console.log(err)
-        this.$message.error(err.data)
-      })
+        else{
+          this.addToCollection(row.symbol,collectionId);
+        }
+      }).catch(() => {
+        // 用户点击取消后的操作
+        // 可以不做任何处理
+      });
     },
+    addToCollection(symbol,collectionid) {
+      // 调用后端接口添加至收藏夹
+      addToCollection({symbol,collectionid}).then(res => {
+        console.log(res)
+        if (res.code === 200) {
+          this.$message.success("收藏成功");
+          this.getData(); // 重新加载数据
+        }
+      }).catch(err => {
+        console.log(err);
+        this.$message.error(err.data);
+      });
+    },
+
+    //后面没用的
     addStockList(){
 
     },
@@ -165,7 +158,10 @@ export default {
     handlePageChange(val) {
       this.$set(this.query, 'pageIndex', val);
       this.getData();
-    }
+    },
+    selectCode(){},
+    getSelectValue(){},
+
   }
 };
 </script>

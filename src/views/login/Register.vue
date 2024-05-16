@@ -113,8 +113,10 @@ export default {
         return false
       }
       else{
-        register({password:md5(this.regUser.regPwd).substring(8, 24),userAccount:this.regUser.regUsername,email:this.regUser.email,captcha:this.regUser.captcha}).then(res=>{
+        // register({password:md5(this.regUser.regPwd).substring(8, 24),userAccount:this.regUser.regUsername,email:this.regUser.email,captcha:this.regUser.captcha}).then(res=>{
+        register({password:this.regUser.regPwd,userAccount:this.regUser.regUsername,email:this.regUser.email,captcha:this.regUser.captcha}).then(res=>{
           console.log(res.code)
+          console.log(res)
           if(res.code===200){
             this.loginAdmin=res.data
             console.log(res)

@@ -3,20 +3,20 @@
   <div class="base">
 
 <!--    验证码模块-->
-    <el-card class="cover" v-if="loginUser.userid">
+<!--    <el-card class="cover" v-if="loginUser.userid">-->
 
-      <slide-verify :l="42"
-                    :r="10"
-                    :w="310"
-                    :h="155"
-                    :accuracy="6"
-                    slider-text="向右滑动"
-                    @success="onSuccess"
-                    @fail="onFail"
-                    @refresh="onRefresh"
-      ></slide-verify>
+<!--      <slide-verify :l="42"-->
+<!--                    :r="10"-->
+<!--                    :w="310"-->
+<!--                    :h="155"-->
+<!--                    :accuracy="6"-->
+<!--                    slider-text="向右滑动"-->
+<!--                    @success="onSuccess"-->
+<!--                    @fail="onFail"-->
+<!--                    @refresh="onRefresh"-->
+<!--      ></slide-verify>-->
 
-    </el-card>
+<!--    </el-card>-->
 
 
     <!-- 登录界面 -->
@@ -207,6 +207,7 @@ import {login, register, getCaptcha, emailLogin} from "@/api/index";
 import request from "@/api/request"
 import "@/assets/css/button.css"
 import md5 from 'js-md5'
+import {ajax,get,post,ajaxRequest,getRequest,postRequest} from "@/api/request";
 
 export default {
 
@@ -257,37 +258,61 @@ export default {
         this.$message.error("用户名不能为空!")
       }
 
-      // login({ password: md5(this.loginUser.password).substring(8, 24), userAccount: this.loginUser.userAccount }).then(res=>{
-      login({ password: this.loginUser.password, userAccount: this.loginUser.userAccount }).then(res=>{
-        console.log(res)
-        console.log(res.response)
-        if(res.code===200){
-          this.loginUser.userAccount=res.response.account
-          this.loginUser.userid=res.response.userid
-          localStorage.setItem("token",res.token)
-          //表示把res.data.data.token这个value存储到本地的“token”这个key里面
-
-          // this.onSuccess();
+      // 发起 POST 请求
+      postRequest('http://124.71.22.245:10010/user/log/login', { userAccount: this.loginUser.userAccount,password: md5(this.loginUser.password).substring(8, 24) }, function(err, data) {
+        if (err) {
+          console.error('Error:', err);
+        } else {
+          console.log('POST 请求成功:', data);
         }
-      }).catch(err=>{
-        //异常处理
-        console.log(err)
-        this.$message.error(err.data)
-      })
+      });
+      // login({ password: md5(this.loginUser.password).substring(8, 24), userAccount: this.loginUser.userAccount }).then(res=>{
+      //   console.log(res)
+      //   if(res.code===200){
+      //     this.loginUser=res.user
+      //     // this.onSuccess();
+      //   }
+      // }).catch(err=>{
+      //   //异常处理
+      //   console.log(err)
+      //   this.$message.error(err.data)
+      // })
     },
 
     //获取验证码
     getCaptcha(){
-      getCaptcha({email:this.emailLog.email}).then(res=>{
-        console.log(res)
-        if(res.code===200){
-          this.$message.success("验证码发送成功");
+      console.log(this.emailLog.email)
+      //使用案例
+      // let result = ajax({
+      //   url: "http://124.71.22.245:10010/user/log/sendCaptcha?email=2426922959@qq.com",
+      //   type:"GET",
+      //   data:{
+      //     email : this.emailLog.email,
+      //   }
+      // })
+      // console.log(result)
+
+      // 发起 GET 请求
+      getRequest('http://124.71.22.245:10010/user/log/sendCaptcha', { email:this.emailLog.email }, function(err, data) {
+        if (err) {
+          console.error('Error:', err);
+        } else {
+          console.log('GET 请求成功:', data);
         }
-      }).catch(err=>{
-        //异常处理
-        // console.log(err)
-        this.$message.error("验证码发送失败")
-      })
+      });
+
+
+      // getCaptcha({email:this.emailLog.email}).then(res=>{
+      //   console.log(res)
+      //   if(res.code===200){
+      //     this.$message.success("验证码发送成功");
+      //   }
+      // }).catch(err=>{
+      //   //异常处理
+      //   // console.log(err)
+      //   this.$message.error("验证码发送失败")
+      // })
+
     },
 
     //邮箱登录
@@ -302,11 +327,9 @@ export default {
       }
       else{
         emailLogin({email:this.emailLog.email,captcha:this.emailLog.captcha}).then(res=>{
-          console.log("res"+res)
+          console.log(res)
           if(res.code===200){
             console.log(res)
-            localStorage.setItem("token",res.data.token)
-            //表示把res.data.data.token这个value存储到本地的“token”这个key里面
             this.onSuccess()
           }
           else{

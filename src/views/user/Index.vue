@@ -1,5 +1,71 @@
 <template>
-  <div ref="chart" style="width: 100%; height: 400px;"></div>
+  <div>
+    <div class = "class">
+      <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+        <el-tab-pane label="上证指数" name="first"></el-tab-pane>
+        <el-tab-pane label="深证指数" name="second"></el-tab-pane>
+        <el-tab-pane label="创业板指数" name="third"></el-tab-pane>
+        <el-tab-pane label="科创50" name="fourth"></el-tab-pane>
+      </el-tabs>
+    </div>
+
+    <div class="container">
+      <div class="left-container">
+        <div ref="chart" style="width: 100%; height: 400px;"></div>
+        <div class="hot-topics">
+          <h2 style="padding-left:5px; font-size: 16px; font-family: Arial, sans-serif;">热门话题</h2>
+          <div class="topics-list">
+            <div class="topic-item" v-for="(topic, index) in topics" :key="index">
+              {{ index < 4 ? index + 1 : index + 1 }}. {{ topic }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="right-container">
+        <h2 style="font-size: 16px; font-family: Arial, sans-serif;">龙虎榜</h2>
+        <table class="stock-rise">
+          <thead>
+          <tr>
+            <th>股票名称</th>
+            <th>当前价</th>
+            <th>涨跌额</th>
+            <!--        <th>涨跌幅</th>-->
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="stock in stocks" :key="stock.code">
+            <td class="stock-name" >{{ stock.name }}</td>
+            <td class="stock-price">{{ stock.price }}</td>
+            <td class="stock-change">{{ stock.change }}</td>
+          </tr>
+          </tbody>
+        </table>
+        <h2 style="font-size: 16px; font-family: Arial, sans-serif;">沪深涨幅榜</h2>
+        <table class="stock-rise">
+          <thead>
+          <tr>
+            <th>股票名称</th>
+            <th>当前价</th>
+            <th>涨跌额</th>
+            <!--        <th>涨跌幅</th>-->
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="stock in stocks" :key="stock.code">
+            <td class="stock-name" >{{ stock.name }}</td>
+            <td class="stock-price">{{ stock.price }}</td>
+            <td class="stock-change">{{ stock.change }}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+
 </template>
 
 <script>
@@ -9,7 +75,30 @@ export default {
   name: 'Index',
   data() {
     return {
+      activeName: 'first',
       chart: null,
+      stocks: [
+        { name: '天地源', price: '1.83', change: '+0.6' },
+        { name: '南京化纤', price: '4.70', change: '+0.43' },
+        { name: '西昌电力', price: '11.42', change: '+1.04'},
+        { name: '济明医疗', price: '9.33', change: '+0.85'},
+        { name: '艾艾精工', price: '11.42', change: '+1.04'},
+        { name: '南都物业', price: '11.42', change: '+1.04'},
+        { name: '熹华股份', price: '11.42', change: '+1.04'},
+        { name: '东方集团', price: '11.42', change: '+1.04'},
+        { name: '星光农机', price: '11.42', change: '+1.04'},
+        { name: '乐山电力', price: '11.42', change: '+1.04'},
+      ],
+      topics: [
+        '量化投资大师西蒙斯',
+        '上市首日大涨！极氪市值突破70亿美元',
+        '港股内房股暴涨，世茂集团狂飙',
+        '电力股再度飙升，西昌电力5天3板！',
+        '地产股继续反弹，万科A高开高走',
+        '合成生物还在走强！蔚蓝生物8连板',
+        '沪指再创年内新高，何时突破3200点？',
+        '房地产再度活跃，万科保利双双走强',
+      ],
     };
   },
   mounted() {
@@ -19,6 +108,17 @@ export default {
     }, 0);
   },
   methods: {
+    handleClick(tab, event) {
+      if (tab.name === 'first') {
+        this.$router.push({ name: 'AddUser' });
+      } else if (tab.name === 'second') {
+        this.$router.push({ name: 'AddUser' });
+      } else if (tab.name === 'third') {
+        this.$router.push({ name: 'AddUser' });
+      } else if (tab.name === 'fourth') {
+        this.$router.push({ name: 'AddUser' });
+      }
+    },
     drawChart() {
       const upColor = '#ec0000';
       const upBorderColor = '#8A0000';
@@ -116,10 +216,10 @@ export default {
       ]);
 
       const option = {
-        title: {
-          text: '上证指数',
-          left: 0
-        },
+        // title: {
+        //   text: '上证指数',
+        //   left: 0
+        // },
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -332,5 +432,95 @@ export default {
 
 <style scoped>
 /* 你可以在这里添加样式 */
+.container {
+  display: flex;
+  /*display: inline-block;*/
+  flex-direction: row;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+}
+.left-container {
+  float: left;
+  display: flex;
+  flex-direction: column;
+  /*margin-left: 200px;*/
+  width: 900px;
+}
+
+.right-container {
+  float: right;
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+}
+
+
+
+
+.stock-rise {
+  margin-right: 25px;
+  border: 1px solid rgb(211, 211, 211);
+  box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.stock-rise tbody tr:nth-child(odd) {
+  background-color: white; /* 奇数行背景颜色为白色 */
+}
+
+.stock-rise tbody tr:nth-child(even) {
+  background-color: AliceBlue ; /* 偶数行背景颜色为淡蓝色 */
+}
+
+.stock-name {
+  color: DeepSkyBlue  ;
+  font-weight: lighter;
+  font-size: 12px;
+}
+
+.stock-price,
+.stock-change {
+  color: red;
+  font-weight: lighter;
+  font-size: 12px;
+}
+
+
+.hot-topics {
+  width: 80%;
+  margin-top: 20px;
+  margin-left: 30px;
+  padding-left:5px;
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px solid rgb(211, 211, 211);
+  box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+
+.topics-list {
+  display: flex;
+  flex-wrap: wrap;
+  list-style-type: none;
+  padding: 0;
+  width: 100%;
+}
+
+.topic-item {
+  width: 50%;
+  padding: 5px 0;
+}
+
+.hot-topics ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.hot-topics li {
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: lighter;
+}
 
 </style>

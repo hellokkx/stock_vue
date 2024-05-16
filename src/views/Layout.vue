@@ -66,7 +66,7 @@
               <span>股票信息</span>
             </template>
             <el-menu-item index="/stockList">所有股票</el-menu-item>
-            <el-menu-item index="/starList">收藏股票</el-menu-item>
+            <el-menu-item index="/starList">收藏夹</el-menu-item>
           </el-submenu>
 
           <el-submenu index="2">
@@ -98,7 +98,7 @@
             <el-menu-item index="3">VIP策略</el-menu-item>
           </el-submenu>
 
-          <el-menu-item index="5">
+          <el-menu-item index="/class">
               <i class="el-icon-location"></i>
               <span>量化课堂</span>
           </el-menu-item>

@@ -46,7 +46,7 @@
           <el-submenu index="1">
             <template slot="title">
               <i class="el-icon-location"></i>
-              <span>大盘指数</span>
+              <span>策略管理</span>
             </template>
             <el-menu-item index="/admin/addUser">上证指数</el-menu-item>
             <el-menu-item index="2">深证指数</el-menu-item>
@@ -94,7 +94,7 @@ export default {
     logout(){
       //清除浏览器用户数据
       Cookies.remove('user')
-      this.$router.push('/login')
+      this.$router.push('/adminlogin')
     }
   }
 }

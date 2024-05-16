@@ -80,6 +80,9 @@ export default {
         console.error(error);
       });
     },
+    created() {
+      this.token =  localStorage.getItem('token')
+    },
     drawChart() {
       const upColor = '#ec0000';
       const upBorderColor = '#8A0000';

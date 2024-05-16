@@ -15,8 +15,13 @@ const routes = [
     component: ()=>import('@/views/login/Login.vue'),
   },
   {
+    path: '/adminlogin',
+    name: 'AdminLogin',
+    component: ()=>import('@/views/admin/AdminLogin.vue'),
+  },
+  {
     path: '/register',
-    name: 'Login2',
+    name: 'Register',
     component: ()=>import('@/views/login/Register.vue'),
   },
     //------------------------1_Layout-------------------------
@@ -34,9 +39,14 @@ const routes = [
       //---------------------2_SelfStock--------------------------
       {path: 'stockList', name: 'StockList', component: () => import('@/views/stock/StockList.vue')},
       {path: 'selfSelectStock', name: 'SelfStock', component: () => import('@/views/selfStock/SelfSelectStock.vue')},
+      {path: 'detail', name: 'Detail', component: () => import('@/views/stock/detail.vue')},
+
       //---------------------2_Star--------------------------
       {path: 'starList', name: 'starList', component: () => import('@/views/stock/StarList.vue')},
       // {path: 'selfStar', name: 'selfStar', component: () => import('@/views/star/StockList.vue')},
+
+      //---------------------2_Class--------------------------
+      {path: 'class', name: 'class', component: () => import('@/views/class/class.vue')},
     ]
   },
   {
@@ -62,12 +72,19 @@ const routes = [
       //---------------------2_Stock--------------------------
       {path: 'stockList', name: 'StockList', component: () => import('@/views/stock/StockList.vue')},
       {path: 'starList', name: 'starList', component: () => import('@/views/stock/StarList.vue')},
-
       //---------------------2_SelfStock--------------------------
       {path: 'selfSelectStock', name: 'SelfStock', component: () => import('@/views/selfStock/SelfSelectStock.vue')},
       {path: 'selfSelectStock2', name: 'SelfStock', component: () => import('@/views/selfStock/SelfSelectStock.vue')},
+
+
     ]
   },
+
+
+    //-------------------------1_UserProfile---------------------------
+  // {path: '/AccountSettingModal', name: 'AccountSettingModal', component: ()=>import('@/views/userProfile/AccountSettingModal.vue')},
+  // {path: '/StockFavorites', name: 'StockFavorites', component: ()=>import('@/views/userProfile/StockFavorites.vue')},
+  // {path: '/UserProfile', name: 'UserProfile', component: ()=>import('@/views/userProfile/UserProfile.vue')},
 
 ]
 

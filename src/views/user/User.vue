@@ -2,31 +2,22 @@
   <div>
 
     <div class="container">
-      <div class="handle-box">
-        <el-button
-            type="primary"
-            class="handle-add mr10"
-            @click="addStockList"
-        >批量添加</el-button>
-        <el-button
-            type="danger"
-            class="handle-add mr10"
-            @click="deleteStockList"
-        >批量删除</el-button>
-        <el-select  v-model="selectCode"
-                    clearable
-                    filterable
-                    class="getSelect"
-                    @change="getSelectValue()"
-                    placeholder="请选择">
-          <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-          </el-option>
-        </el-select>
+      <!--搜索表单-->
+      <div style="margin-bottom: 20px">
+        <el-input style="width: 200px" placeholder="请输入id" v-model="input.id"></el-input>
+        <el-input style="width: 200px;margin-left: 10px" placeholder="请输入用户名" v-model="input.useraccount"></el-input>
+<!--        <el-input style="width: 240px" placeholder="请输入id"></el-input>-->
+        <el-button style="margin-left: 5px" type="info" plain @click="getDataByid">
+          <i class=" el-icon-search"></i>
+          <span>搜索</span>
+        </el-button>
+        <el-button style="margin-left: 5px" type="warning" plain @click="reset">
+          <i class=" el-icon-refresh"></i>
+          <span>重置</span>
+        </el-button>
       </div>
+
+
       <el-table
           :data="tableData"
           border
@@ -37,7 +28,7 @@
           @selection-change="handleSelectionChange"
           :default-sort = "{prop: 'userid', order: 'transactionDate'}"
       >
-        <el-table-column type="selection" width="55" align="center"></el-table-column>
+<!--        <el-table-column type="selection" width="55" align="center"></el-table-column>-->
         <el-table-column prop="userid" label="用户id" width="70" align="center"></el-table-column>
         <el-table-column prop="account" label="账号" align="center"></el-table-column>
         <el-table-column prop="ifbanned" label="权限等级" align="center"></el-table-column>
@@ -72,7 +63,7 @@
 
 <script>
 import axios from 'axios'
-import {deleteUser, getStocklist, getUserList} from "@/api";
+import {deleteUser, getStocklist, getUserList,getUserById,getUserByAccount} from "@/api";
 
 export default {
   name: 'StockList',
@@ -85,20 +76,32 @@ export default {
       },
       //表格属性
       tableData: [],
+      input:{
+        useraccount:'',
+        id:'',
+      },
     };
   },
   created() {
+    this.token = localStorage.getItem('token')
     this.getData();
   },
+
   methods: {
+    //重置
+    reset(){  //重置
+      this.input.id=''
+      this.input.useraccount=''
+      this.getData()
+    },
     //获取用户数据
     getData() {
       getUserList().then(res=>{
+        console.log("res"+res)
         if(res.code===200){
           console.log(res)
-          this.tableData=res.userList
+          this.tableData=res.response
           // this.$message.success("查询成功")
-
           // 遍历数据，处理日期属性
           this.tableData.forEach(item => {
             // 将日期字符串转换为 Date 对象
@@ -115,7 +118,7 @@ export default {
 
         }
         else{
-          this.$notify.error(res.msg)
+          this.$message.error(res.msg)
         }
       }).catch(err=>{
         //异常处理
@@ -124,6 +127,108 @@ export default {
       })
     },
 
+
+    //根据id获取用户数据
+    getDataByid() {
+      console.log("gettokken"+this.token)
+      if(this.input.id!==''){
+        getUserById({userId:this.input.id}).then(res=>{
+          console.log("res"+res)
+          if(res.code===200){
+            console.log(res)
+            const responseData = {
+              userid: res.response.userid,
+              account: res.response.account,
+              birthday:res.response.birthday,
+              email:res.response.email,
+              ifbanned:res.response.ifbanned,
+              nickname:res.response.nickname,
+              sex:res.response.sex,
+              signal:res.response.signal,
+              address:res.response.address
+              // 其他属性...
+            };
+
+            const dataList = [responseData];
+            console.log(dataList)
+
+            this.tableData=dataList
+
+            // 遍历数据，处理日期属性
+            this.tableData.forEach(item => {
+              // 将日期字符串转换为 Date 对象
+              let birthday = new Date(item.birthday);
+
+              // 获取年月日信息
+              let year = birthday.getFullYear();
+              let month = (birthday.getMonth() + 1).toString().padStart(2, '0'); // 月份从0开始，需要加1
+              let day = birthday.getDate().toString().padStart(2, '0');
+
+              // 拼接日期字符串
+              item.birthday = `${year}-${month}-${day}`;
+            });
+
+          }
+          else{
+            this.$message.error(res.msg)
+          }
+        }).catch(err=>{
+          //异常处理
+          console.log(err)
+          this.$message.error(err.data)
+        })
+      }
+      else if(this.input.account!==''){
+        getUserByAccount({userAccount:this.input.useraccount}).then(res=>{
+          console.log("res"+res)
+          if(res.code===200){
+            console.log(res)
+            const responseData = {
+              userid: res.response.userid,
+              account: res.response.account,
+              birthday:res.response.birthday,
+              email:res.response.email,
+              ifbanned:res.response.ifbanned,
+              nickname:res.response.nickname,
+              sex:res.response.sex,
+              signal:res.response.signal,
+              address:res.response.address
+              // 其他属性...
+            };
+
+            const dataList = [responseData];
+            console.log(dataList)
+
+            this.tableData=dataList
+
+            // 遍历数据，处理日期属性
+            this.tableData.forEach(item => {
+              // 将日期字符串转换为 Date 对象
+              let birthday = new Date(item.birthday);
+
+              // 获取年月日信息
+              let year = birthday.getFullYear();
+              let month = (birthday.getMonth() + 1).toString().padStart(2, '0'); // 月份从0开始，需要加1
+              let day = birthday.getDate().toString().padStart(2, '0');
+
+              // 拼接日期字符串
+              item.birthday = `${year}-${month}-${day}`;
+            });
+
+          }
+          else{
+            this.$message.error(res.msg)
+          }
+        }).catch(err=>{
+          //异常处理
+          console.log(err)
+          this.$message.error(err.data)
+        })
+      }
+      else{
+        this.$message.info("当前查询内容为空")
+      }
+    },
 
     //删除用户数据
     del(id){
