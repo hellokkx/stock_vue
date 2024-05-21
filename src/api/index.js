@@ -62,3 +62,6 @@ export const getUserByAccount = ({userAccount})=>get('/user/getUserByAccount',{u
 
 //删除用户数据
 export const deleteUser = ({id})=>get('/delete',{id})
+
+
+

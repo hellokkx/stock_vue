@@ -63,7 +63,7 @@
 
 <script>
 import axios from 'axios'
-import {deleteUser, getStocklist, getUserList,getUserById,getUserByAccount} from "@/api";
+import {deleteUser, getUserList,getUserById,getUserByAccount} from "@/api";
 
 export default {
   name: 'StockList',

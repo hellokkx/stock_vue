@@ -6,6 +6,7 @@
         <el-menu-item v-for="stock in stocks" :key="stock.symbol" @click="selectStock(stock)">{{ stock.name }}</el-menu-item>
       </el-menu>
       <el-button type="primary" @click="addStock">添加股票</el-button>
+
     </div>
     <!-- K线图 -->
   <div ref="chart" class="chart"></div>

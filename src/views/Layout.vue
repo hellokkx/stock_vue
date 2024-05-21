@@ -19,7 +19,7 @@
 
           <el-dropdown-menu slot="dropdown" style="margin-top:-5px;">
             <el-dropdown-item>
-              <div style="width: 70px;text-align: center;" @click="logout">
+              <div style="width: 70px;text-align: center;" @click="jumptoPerson">
                 个人中心
               </div>
             </el-dropdown-item>
@@ -134,7 +134,11 @@ export default {
       //清除浏览器用户数据
       Cookies.remove('user')
       this.$router.push('/login')
-    }
+    },
+    jumptoPerson(){
+      this.$router.push('/login')
+    },
+
   }
 }
 </script>

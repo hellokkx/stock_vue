@@ -463,6 +463,8 @@ export default {
   box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
   font-size: 14px;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 
 .stock-rise tbody tr:nth-child(odd) {
