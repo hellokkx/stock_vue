@@ -38,7 +38,7 @@ const routes = [
       {path: 'addUser', name: 'AddUser', component: () => import('@/views/user/Index.vue')},
       //---------------------2_SelfStock--------------------------
       {path: 'stockList', name: 'StockList', component: () => import('@/views/stock/StockList.vue')},
-      // {path: 'selfSelectStock', name: 'SelfStock', component: () => import('@/views/selfStock/SelfSelectStock.vue')},
+      {path: 'selfSelectStock', name: 'SelfStock', component: () => import('@/views/selfStock/SelfSelectStock.vue')},
       {path: 'detail', name: 'Detail', component: () => import('@/views/stock/detail.vue')},
 
       //---------------------2_Star--------------------------
@@ -55,8 +55,6 @@ const routes = [
   },
 
 
-    //-----------------------1-SelfStock-------------------------------------
-  {path: 'selfSelectStock', name: 'SelfStock', component: () => import('@/views/selfStock/SelfSelectStock.vue')},
 
     //--------------------------1-Admin-------------------------
   {
