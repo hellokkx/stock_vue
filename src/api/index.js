@@ -49,6 +49,15 @@ export const getCollectionStar =({collectionid})=>post('/user/selectStockFromCol
 //删除收藏夹内的某一条数据
 export const deleteStarCollection =({symbol,collectionid})=>post('/user/deleteFromCollection',{symbol,collectionid})
 
+//获取股票数据
+export const getStockDataBySymbol =({symbol})=>get('/StockData/getStockDataBySymbol',{symbol})
+
+//获取龙虎榜相关数据
+export const getTopList =()=>get('/StockData/getTopList')
+
+//获取大盘热点新闻
+export const getMajorNews =()=>get('/StockData/getMajorNews')
+
 //--------------------用户数据相关--------------------
 //获取用户数据
 // export const getUserList =()=>get('/getAllUser')
@@ -62,6 +71,8 @@ export const getUserByAccount = ({userAccount})=>get('/user/getUserByAccount',{u
 
 //删除用户数据
 export const deleteUser = ({id})=>get('/delete',{id})
+
+
 
 
 

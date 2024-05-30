@@ -83,7 +83,7 @@
               <i class="el-icon-location"></i>
               <span>走势预测</span>
             </template>
-            <el-menu-item index="3">自选股走势预测</el-menu-item>
+            <el-menu-item index="/predict1">自选股走势预测</el-menu-item>
             <el-menu-item index="3">自定义走势预测</el-menu-item>
           </el-submenu>
 

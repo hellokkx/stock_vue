@@ -47,6 +47,9 @@ const routes = [
 
       //---------------------2_Class--------------------------
       {path: 'class', name: 'class', component: () => import('@/views/class/class.vue')},
+
+      //---------------------2_Predict--------------------------
+      {path: 'predict1', name: 'predict', component: () => import('@/views/predict/PredictStock.vue')},
     ]
   },
   {
