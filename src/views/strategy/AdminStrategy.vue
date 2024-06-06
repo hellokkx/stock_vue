@@ -389,8 +389,12 @@ def after_market_close(context):
   justify-content: space-between;
 }
 
-.Info, .code {
-  width: 48%;
+.Info{
+  width: 40%;
+}
+
+.code {
+  width: 58%;
 }
 
 
