@@ -2,47 +2,39 @@
   <div>
 
 
-    <div class="container">
-<!--      <div class="handle-box">-->
+    <el-card style="width: 1000px; margin-left: 20px;">
+      <div class="container">
+        <!--      <div class="handle-box">-->
         <h3 style="margin-left: 20px">策略审核</h3>
-<!--        <el-button-->
-<!--            type="primary"-->
-<!--            class="handle-add mr10"-->
-<!--            @click="addStockList"-->
-<!--        >批量添加</el-button>-->
-<!--        <el-button-->
-<!--            type="danger"-->
-<!--            class="handle-add mr10"-->
-<!--            @click="deleteStockList"-->
-<!--        >批量删除</el-button>-->
-<!--      </div>-->
-      <el-table
-          :data="tableData"
-          border
-          stripe
-          class="table"
-          ref="multipleTable"
-          header-cell-class-name="table-header"
-          @selection-change="handleSelectionChange"
-          :default-sort = "{prop: 'symbol', order: 'transactionDate'}"
-      >
 
-        <el-table-column prop="strid" label="id" width="55" align="center"></el-table-column>
-        <el-table-column prop="strname" label="策略名" align="center"></el-table-column>
-        <el-table-column prop="account" label="上传者账号" align="center"></el-table-column>
-        <!--        <el-table-column prop="symbol" label="全球唯一标识符" align="center"></el-table-column>-->
-        <el-table-column prop="ifpass" label="是否在策略池中" align="center"></el-table-column>
-        <el-table-column prop="strdate" label="上传日期" align="center"></el-table-column>
-        <el-table-column prop="strgrade" label="策略等级" align="center"></el-table-column>
+        <el-table
+            :data="tableData"
+            border
+            stripe
+            class="table"
+            ref="multipleTable"
+            header-cell-class-name="table-header"
+            @selection-change="handleSelectionChange"
+            :default-sort = "{prop: 'symbol', order: 'transactionDate'}"
+        >
 
-        <el-table-column label="策略审核" align="left" header-align="50px">
-          <template v-slot="scope">
-            <el-button type="primary" @click="visable">点击审核</el-button>
-          </template>
-        </el-table-column>
+          <el-table-column prop="strid" label="id" width="55" align="center"></el-table-column>
+          <el-table-column prop="strname" label="策略名" align="center"></el-table-column>
+          <el-table-column prop="account" label="上传者账号" align="center"></el-table-column>
+          <!--        <el-table-column prop="symbol" label="全球唯一标识符" align="center"></el-table-column>-->
+          <el-table-column prop="ifpass" label="是否在策略池中" align="center"></el-table-column>
+          <el-table-column prop="strdate" label="上传日期" align="center"></el-table-column>
+          <el-table-column prop="strgrade" label="策略等级" align="center"></el-table-column>
 
-      </el-table>
-    </div>
+          <el-table-column label="策略审核" align="left" header-align="50px">
+            <template v-slot="scope">
+              <el-button type="primary" plain @click="visable">点击审核</el-button>
+            </template>
+          </el-table-column>
+
+        </el-table>
+      </div>
+    </el-card>
 
     <!-- 审核盒子 -->
     <div class="auditbox">

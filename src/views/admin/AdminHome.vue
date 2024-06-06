@@ -52,7 +52,7 @@ export default {
       list: [
         {
           title: '迭代1',
-          content: '1111111111111111111111111111',
+          content: '',
           name: '成都有限公司',
           time: '2022年10月25日',
         },
@@ -64,19 +64,19 @@ export default {
         // },
         {
           title: '迭代2',
-          content: '222222222222222222',
+          content: '',
           name: '成都有限公司',
           time: '2022年10月23日',
         },
         {
           title: '迭代3',
-          content: '33333333333333333333333333',
+          content: '',
           name: '成都有限公司',
           time: '2022年10月22日',
         },
         {
           title: '迭代4',
-          content: '44444444444444444444444444',
+          content: '',
           name: '成都有限公司',
           time: '2022年10月21日',
         },

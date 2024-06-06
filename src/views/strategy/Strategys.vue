@@ -12,7 +12,7 @@
                 <span class="bold-text">{{ scope.row.strname }}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="ifpass" label="审核"></el-table-column>
+<!--            <el-table-column prop="ifpass" label="审核"></el-table-column>-->
             <el-table-column prop="strdate" label="上传日期"></el-table-column>
             <el-table-column label="操作" width="150">
               <template slot-scope="scope">
@@ -37,7 +37,7 @@
                 <span class="bold-text">{{ scope.row.strname }}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="ifpass" label="审核"></el-table-column>
+<!--            <el-table-column prop="ifpass" label="审核"></el-table-column>-->
             <el-table-column prop="strdate" label="上传日期"></el-table-column>
             <el-table-column label="操作" width="180">
               <template slot-scope="scope">
@@ -179,7 +179,25 @@ export default {
 
     downloadStrategy(row) {
       console.log('Download:', row);
+      const fileName = row.strname + ".py";
+      // const filePath = "/code/" + fileName; // 注意，这里使用相对路径
+      const filePath = "http://localhost:8080/code/" + fileName; // 注意，这里使用相对路径
+
+      console.log(filePath);
+
+      // 创建一个隐藏的a标签
+      const link = document.createElement('a');
+      link.href = filePath;
+      link.download = fileName;
+
+      // 将a标签添加到文档中并触发点击事件
+      document.body.appendChild(link);
+      link.click();
+
+      // 点击完成后从文档中移除a标签
+      document.body.removeChild(link);
     },
+
     deleteStrategy(row) {
       console.log('Delete:', row);
     },
