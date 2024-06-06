@@ -15,10 +15,10 @@
     </div>
     <!-- 状态栏-->
     <div class="top-bar">
-      <input type="date">
+      <input type="date" style="margin-left: 40px">
       <span>-</span>
       <input type="date">
-      <input style="width:100px;height:20px;vertical-align:middle;" type="text" value="￥100000">
+<!--      <input style="width:100px;height:20px;vertical-align:middle;" type="text" value="￥100000">-->
       <select style="height:20px" v-model="selectedPythonVersion">
         <option value="Python3">Python3</option>
         <option value="Python2">Python2</option>
@@ -69,16 +69,16 @@ export default {
   data() {
     return {
       options: [{
-        value: '选项1',
+        value: 'alpha',
         label: '首版潜力股'
       }, {
-        value: '选项2',
+        value: 'mean',
         label: '多因子策略'
       }, {
-        value: '选项3',
+        value: 'mva',
         label: 'ETF追涨杀跌'
       }, {
-        value: '选项4',
+        value: 'mva1',
         label: '强趋势模型策略'
       }],
       value: '',
@@ -163,14 +163,15 @@ export default {
 
     //---------获取回测数据---------------
     drawChart() {
-      var ts_code='000001.SZ'
-      var str='mva'
+      var ts_code=this.input
+      var str=this.value
       startStrategy({ts_code,str}).then(res=>{
         if(res.code===200){
           // console.log(res)
           this.dialogVisible = false;
           const data=res.response.graph
-          const data0 = data.map(item => [item.data, item.benchmark, item.strategy]);
+          // const data0 = data.map(item => [item.data, item.benchmark, item.strategy]);
+          const data0 = data.map(item => [item.data, parseFloat(item.benchmark) / 100, parseFloat(item.strategy) / 100]);
           // const data0 = this.generateData('2023/10/1', '2024/4/1');
           console.log("data0"+data0)
 
@@ -183,12 +184,12 @@ export default {
               trigger: 'axis',
               formatter: function(params) {
                 const date = params[0].axisValue;
-                const strategyReturn = params[0].data.toFixed(2);
-                const benchmarkReturn = params[1].data.toFixed(2);
+                const strategyReturn = params[0].data.toFixed(4);
+                const benchmarkReturn = params[1].data.toFixed(4);
                 return `
       ${date}<br/>
-      策略收益：${strategyReturn}%<br/>
-      基准收益：${benchmarkReturn}%`;
+      策略收益：${strategyReturn}<br/>
+      基准收益：${benchmarkReturn}`;
               }
             },
             dataZoom: [
@@ -218,7 +219,7 @@ export default {
             yAxis: {
               type: 'value',
               axisLabel: {
-                formatter: '{value}%' // 纵轴数据类型是百分比
+                formatter: '{value}' // 纵轴数据类型是百分比
               },
               axisLine: {
                 lineStyle: {
@@ -252,85 +253,6 @@ export default {
         //异常处理
         console.error('获取数据失败:', error);
       })
-
-      // console.log("data"+data)
-      // // const data0 = data.map(item => [item.data, item.benchmark, item.strategy]);
-      // const data0 = this.generateData('2023/10/1', '2024/4/1');
-      // // console.log(data0)
-      //
-      // const dates = data0.map(item => item[0]);
-      // const benchmarkReturns = data0.map(item => item[1]);
-      // const strategyReturns = data0.map(item => item[2]);
-      //
-      // const option = {
-      //   tooltip: {
-      //     trigger: 'axis',
-      //     formatter: function(params) {
-      //       const date = params[0].axisValue;
-      //       const strategyReturn = params[0].data.toFixed(2);
-      //       const benchmarkReturn = params[1].data.toFixed(2);
-      //       return `
-      // ${date}<br/>
-      // 策略收益：${strategyReturn}%<br/>
-      // 基准收益：${benchmarkReturn}%`;
-      //     }
-      //   },
-      //   dataZoom: [
-      //     {
-      //       type: 'inside',
-      //       start: 0,
-      //       end: 100
-      //     },
-      //     {
-      //       type: 'slider',
-      //       bottom: 25, // 调整控件的位置
-      //       height: 15, // 调整控件的高度
-      //       start: 0,
-      //       end: 100
-      //     }
-      //   ],
-      //   xAxis: {
-      //     type: 'category',
-      //     data: dates,
-      //     axisLine: {
-      //       lineStyle: {
-      //         color: '#000',
-      //         width: 2
-      //       }
-      //     }
-      //   },
-      //   yAxis: {
-      //     type: 'value',
-      //     axisLabel: {
-      //       formatter: '{value}%' // 纵轴数据类型是百分比
-      //     },
-      //     axisLine: {
-      //       lineStyle: {
-      //         color: '#000',
-      //         width: 2
-      //       }
-      //     }
-      //   },
-      //   series: [
-      //     {
-      //       name: '基准收益',
-      //       data: benchmarkReturns,
-      //       type: 'line',
-      //       lineStyle: {
-      //         color: 'rgb(255, 70, 131)',
-      //       }
-      //     },
-      //     {
-      //       name: '策略收益',
-      //       data: strategyReturns,
-      //       type: 'line',
-      //       lineStyle: {
-      //         color: 'rgb(0, 191, 255)',
-      //       }
-      //     }
-      //   ]
-      // };
-      // this.chart.setOption(option);
     },
   }
 }

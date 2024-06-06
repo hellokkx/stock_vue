@@ -157,7 +157,7 @@ export default {
         phone: '13800138000',
         userid: '',
         password: '********',
-        avatarUrl: require('@/views/user/avatar/uavatar.png')
+        // avatarUrl: require('@/views/user/avatar/uavatar.png')
       },
       passwordForm: {
         currentPassword: '',
