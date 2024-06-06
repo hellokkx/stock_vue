@@ -1,403 +1,61 @@
 <template>
   <div class="container">
-    <!-- 左边占 70% -->
-    <div class="left-block">
-      <!-- 纵向布局 -->
-      <div class="vertical-layout">
-        <!-- 第一个部分 -->
-        <div class="section section1">
-          <div class="input-group">
-            <h3>预测模块</h3>
-            <el-input v-model="symbol" placeholder="请输入代码" style="width: 230px;margin-right: 10px;"></el-input>
-            <el-select v-model="model" placeholder="选择模型" style="width: 230px;margin-right: 10px;">
-              <el-option
-                  v-for="item in modelOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-              ></el-option>
-            </el-select>
-            <el-button type="success" @click="showBasicInfo">基本情况</el-button>
-            <el-button type="primary" @click="predict">点击预测</el-button>
-          </div>
-        </div>
-
-        <!-- 第二个部分 -->
-        <div class="section section2">
-          <div v-if="showLine" id="chart-container" style="height: 350px;"></div>
-          <div v-if="showKLine" id="chart-container2" style="height: 350px;"></div>
-        </div>
-        <!-- 第三个部分 -->
-        <div class="section3">
-          <!--          <div v-if="showLine" id="chart-container3" style="height: 350px;"></div>-->
-          <div id="chart-container3" style="height: 220px"></div>
+    <!-- 纵向布局 -->
+    <div class="vertical-layout">
+      <!-- 第一个部分 -->
+      <div class="section section1">
+        <div class="input-group">
+          <h3>预测模块</h3>
+          <el-input v-model="tsCode" placeholder="请输入代码tsCode" style="width: 230px;margin-right: 10px;"></el-input>
+          <el-select v-model="model" placeholder="请选择预测模型" style="width: 230px;margin-right: 10px;">
+            <el-option
+                v-for="item in modelOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+            ></el-option>
+          </el-select>
+          <!--            <el-button type="success" @click="showBasicInfo">基本情况</el-button>-->
+          <el-button type="primary" @click="predict">点击预测</el-button>
         </div>
       </div>
-    </div>
-    <!-- 右边占 30% -->
-    <div class="right-block">
-      <!-- 纵向布局 -->
-      <div class="vertical-layout">
 
-        <!-- 第0个部分 -->
-        <div class="section right-section0">
-          <el-p><strong>{{ statement }}</strong></el-p>
-        </div>
-
-        <!-- 第一个部分 -->
-        <div class="section right-section1">
-          <el-p><strong>资金综合评价：</strong>{{ evaluation1 }}</el-p>
-          <el-rate v-model="ratevalue1" disabled show-score text-color="#ff9900" score-template="{value}" :colors="colors" style="margin-top: 5px;"></el-rate>
-          <el-statistic group-separator="," :precision="2" :value="statisticvalue1" :title="title1" style="margin-top: 5px"></el-statistic>
-
-        </div>
-
-        <!-- 第二个部分 -->
-        <div class="section right-section2">
-          <el-p><strong>估值综合评价：</strong>{{ evaluation2 }}</el-p>
-          <el-rate v-model="ratevalue2" disabled show-score text-color="#ff9900" score-template="{value}" :colors="colors" style="margin-top: 5px;"></el-rate>
-          <el-statistic group-separator="," :precision="2" :value="statisticvalue2" :title="title2" style="margin-top: 5px"></el-statistic>
-        </div>
-
-        <!-- 第三个部分 -->
-        <div class="section right-section3">
-          <el-p><strong>财务综合评价：</strong>{{ evaluation3 }}</el-p>
-          <el-rate v-model="ratevalue3" disabled show-score text-color="#ff9900" score-template="{value}" :colors="colors" style="margin-top: 5px;"></el-rate>
-          <el-statistic group-separator="," :precision="2" :value="statisticvalue3" :title="title3" style="margin-top: 5px"></el-statistic>
-
-
-        </div>
-
-        <!-- 第四个部分 -->
-        <div class="section right-section4">
-          <el-p><strong>技术综合评价：</strong>{{ evaluation4 }}</el-p>
-          <el-rate v-model="ratevalue4" disabled show-score text-color="#ff9900" score-template="{value}" :colors="colors" style="margin-top: 5px;"></el-rate>
-          <el-statistic group-separator="," :precision="2" :value="statisticvalue4" :title="title4" style="margin-top: 5px"></el-statistic>
-
-        </div>
+      <!-- 第二个部分 -->
+      <div class="section section2">
+        <!--          <div v-if="showLine" id="chart-container" style="height: 500px;width: 900px;margin-left: 40px"></div>-->
+        <div v-if="showKLine" id="chart-container2" style="height: 500px;width: 900px;margin-left: 40px"></div>
       </div>
     </div>
+
   </div>
 </template>
 
 <script>
 import * as echarts from 'echarts'
-import {getStockDataBySymbol} from "@/api"
+import {getStockDataBySymbol, predictStockData} from "@/api"
 
 export default {
   data() {
     return {
       showLine:true,
       showKLine:false,
-      statement:'相关建议',
-      ratevalue1:0,
-      ratevalue2:0,
-      ratevalue3:0,
-      ratevalue4:0,
-      statisticvalue1:0,
-      statisticvalue2:0,
-      statisticvalue3:0,
-      statisticvalue4:0,
-      evaluation1:'',
-      evaluation2:'',
-      evaluation3:'',
-      evaluation4:'',
-      title1:'换手率',
-      title2:'市盈率',
-      title3:'市值',
-      title4:'涨跌幅',
       colors: ['#99A9BF', '#F7BA2A', '#FF9900'],
-      symbol: '',
+      tsCode: '',
       model: '',
       modelOptions: [
-        { label: '模型1', value: 'model1' },
-        { label: '模型2', value: 'model2' },
-        { label: '模型3', value: 'model3' }
+        { label: 'DSFormer', value: 'DSFormer' },
+        { label: 'itransformer', value: 'itransformer' },
+        { label: 'patchTST', value: 'patchTST' }
       ],
       response: []
       // 存储后台返回的数据
     };
   },
   methods: {
-    showBasicInfo() {
-      console.log('显示基本情况');
-      this.showLine=true;
-      this.showKLine=false;
-      // 执行显示基本情况的逻辑
-      this.initLineChart();
-      this.initRadarChart();
-    },
-
-    initRadarChart(){
-      var chartDom3 = document.getElementById('chart-container3');
-      var myChart3 = echarts.init(chartDom3);
-      var option3;
-
-      option3 = {
-        title: {
-          text: '综合判断'
-        },
-        radar: {
-          // shape: 'circle',
-          indicator: [
-            { name: '资金', max: 6500 },
-            { name: '技术', max: 16000 },
-            { name: '估值', max: 30000 },
-            { name: '财务', max: 38000 },
-          ]
-        },
-        series: [
-          {
-            name: 'Budget vs spending',
-            type: 'radar',
-            data: [
-              {
-                value: [4200, 3000, 20000, 35000],
-              },
-            ]
-          }
-        ]
-      };
-
-      myChart3.setOption(option3);
-    },
-
-    initLineChart() {
-      // 初始化折线图
-      const chartContainer = document.getElementById('chart-container');
-      const myChart = echarts.init(chartContainer);
-      var symbol=this.symbol
-      console.log(symbol)
-
-      //请求数据
-      getStockDataBySymbol({symbol}).then(res=>{
-        console.log(res)
-        if(res.code===200){
-          console.log(res.response)
-
-          //绘制折线图
-          // 获取横坐标数据
-          const xAxisData = res.response.map(item => item.tradeDate);
-          // 获取系列数据
-          const seriesData = res.response.map(item => [
-            item.open, // 开盘价
-            item.close, // 收盘价
-            item.low, // 最低价
-            item.high // 最高价
-          ]);
-
-          // 配置折线图的选项
-          const option = {
-            // title: {
-            //   text: ''
-            // },
-            tooltip: {
-              trigger: 'axis'
-            },
-            legend: {
-              data: ['开盘价', '最高价', '最低价', '收盘价']
-            },
-            grid: {
-              left: '3%',
-              right: '4%',
-              bottom: '10%',
-              containLabel: true
-            },
-            toolbox: {
-              feature: {
-                saveAsImage: {}
-              }
-            },
-            xAxis: {
-              type: 'category',
-              boundaryGap: false,
-              data: xAxisData
-            },
-            yAxis: {
-              type: 'value',
-              min: 'dataMin', // 最小值为数据中的最小值
-              max: 'dataMax'  // 最大值为数据中的最大值
-            },
-
-            dataZoom: [{ // 添加数据缩放功能
-              type: 'inside',
-              start: 0,
-              end: 50,
-              top:'90%',
-              height:10,
-            }, {
-              type: 'slider',
-              show: true,
-              start: 0,
-              end: 50,
-              top:'90%',
-              height:10,
-            }],
-            series: [
-              {
-                name: '开盘价',
-                type: 'line',
-                data: seriesData.map(item => item[0])
-              },
-              {
-                name: '收盘价',
-                type: 'line',
-                data: seriesData.map(item => item[1])
-              },
-              {
-                name: '最低价',
-                type: 'line',
-                data: seriesData.map(item => item[2])
-              },
-              {
-                name: '最高价',
-                type: 'line',
-                data: seriesData.map(item => item[3])
-              }
-            ]
-
-          };
-
-          // 使用配置项渲染折线图
-          myChart.setOption(option);
-
-          //获取评分数据
-          // 解析后端返回的 JSON 数据中的 response 字段
-          var responseArray = res.response;
-
-          // 初始化 turnover_rate 总和为 0
-          let totalTurnoverRate = 0;
-          let totalPe = 0;
-          let Total_mv = 0;
-          let totalpct_chg = 0;
-
-          // 遍历所有对象，计算 turnover_rate 的总和
-          responseArray.forEach(obj => {
-            totalTurnoverRate += obj.turnover_rate;
-            totalPe += obj.pe;
-            Total_mv += obj.total_mv;
-            totalpct_chg += obj.pctChg;
-          });
-
-          // 计算平均值
-          const averageTurnoverRate = totalTurnoverRate / responseArray.length;
-          const averagePe = totalPe / responseArray.length;
-          const averagemv = Total_mv / responseArray.length;
-          const averagepct_chg = totalpct_chg / responseArray.length;
-          console.log("平均 turnover_rate:", averageTurnoverRate);
-          this.statisticvalue1=averageTurnoverRate
-          this.statisticvalue2=averagePe
-          this.statisticvalue3=averagemv
-          this.statisticvalue4=averagepct_chg
-
-          //换手率
-          if(averageTurnoverRate<=0.4){
-            this.evaluation1='强度很低'
-            this.ratevalue1=1
-          }
-          else if(averageTurnoverRate<=0.8){
-            this.evaluation1='强度低'
-            this.ratevalue1=2
-          }
-          else if(averageTurnoverRate<=1.6){
-            this.evaluation1='强度中等'
-            this.ratevalue1=3
-          }
-          else if(averageTurnoverRate<=1.8){
-            this.evaluation1='强度高'
-            this.ratevalue1=4
-          }
-          else{
-            this.evaluation1='强度很高'
-            this.ratevalue1=5
-          }
-
-
-          //市盈率
-          if(averagePe<=5){
-            this.evaluation2='价值低'
-            this.ratevalue2=1
-          }
-          else if(averagePe<=10){
-            this.evaluation2='价值较低'
-            this.ratevalue2=2
-          }
-          else if(averagePe<=15){
-            this.evaluation2='价值中等'
-            this.ratevalue2=3
-          }
-          else if(averagePe<=20){
-            this.evaluation2='价值较高'
-            this.ratevalue2=4
-          }
-          else{
-            this.evaluation2='价值高'
-            this.ratevalue2=5
-          }
-
-          //市值
-          if(averagemv<=5){
-            this.ratevalue3=1
-          }
-          else if(averagemv<=10){
-            this.ratevalue3=2
-          }
-          else if(averagemv<=15){
-            this.ratevalue3=3
-          }
-          else if(averagemv<=20){
-            this.ratevalue3=4
-          }
-          else{
-            this.ratevalue3=5
-          }
-          this.evaluation3=this.ratevalue3
-
-          //涨跌幅
-          if(averagepct_chg<=0){
-            this.evaluation4='很差'
-            this.ratevalue4=1
-          }
-          else if(averagepct_chg<=5){
-            this.evaluation4='差'
-            this.ratevalue4=2
-          }
-          else if(averagepct_chg<=10){
-            this.evaluation4='中等'
-            this.ratevalue4=3
-          }
-          else if(averagepct_chg<=15){
-            this.evaluation4='好'
-            this.ratevalue4=4
-          }
-          else{
-            this.evaluation4='很好'
-            this.ratevalue4=5
-          }
-
-          //建议
-          var sum= this.ratevalue1+this.ratevalue2+this.ratevalue3+this.ratevalue4
-          if(sum<=6){
-            this.statement='建议减持'
-          }
-          else if(sum<=12){
-            this.statement='建议观望'
-          }
-          else{
-            this.statement='建议增持'
-          }
-
-        }
-      }).catch(err => {
-        console.log(err);
-        this.$message.error(err.data);
-      });
-    },
 
     //点击预测按钮
     predict() {
       // 进行预测的逻辑
-      console.log('进行预测');
       this.showLine=false;
       this.showKLine=true;
       // 初始化 K 线图
@@ -413,6 +71,21 @@ export default {
       const upBorderColor = '#8A0000';
       const downColor = '#00da3c';
       const downBorderColor = '#008F28';
+
+      //请求数据
+      var ts_code=this.tsCode
+      var alg=this.model
+      predictStockData({ts_code,alg}).then(res=> {
+        console.log(res)
+        if (res.code === 200) {
+          const rawData=res.response
+          console.log(rawData)
+        }
+      }).catch(err => {
+        console.log(err);
+        this.$message.error(err.data);
+      });
+
       const rawData=[
         {
           "close": 10.19,
@@ -2070,10 +1743,6 @@ export default {
       const data0 = this.splitData(rawData);
 
       const option2 = {
-        // title: {
-        //   text: '上证指数',
-        //   left: 0
-        // },
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -2321,14 +1990,6 @@ export default {
   display: flex;
 }
 
-.left-block {
-  flex: 80%;
-}
-
-.right-block {
-  flex: 20%;
-}
-
 .vertical-layout {
   display: flex;
   flex-direction: column;
@@ -2358,10 +2019,6 @@ export default {
 
 .section2 {}
 
-.section3 {
-  margin-top: -10px;
-}
-
 .input-group {
   display: flex;
   margin-top: 10px;
@@ -2372,49 +2029,4 @@ export default {
   margin-right: 10px;
 }
 
-.right-section0{
-  /* 在样式表中添加以下样式 */
-  /*border: 1px solid #ccc;*/
-  padding-bottom: 5px;
-  padding-top: 5px;
-  font-size: 25px;
-  text-align: center;
-  color:green;
-  border-radius: 5px; /* 圆角半径为 5px */
-  margin-bottom: 10px; /* 为了更好地分隔模块 */
-  /*padding-top: -10px; !* 为了更好地分隔模块 *!*/
-}
-
-.right-section1{
-  /* 在样式表中添加以下样式 */
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 5px; /* 圆角半径为 5px */
-  margin-bottom: 10px; /* 为了更好地分隔模块 */
-}
-
-
-.right-section2{
-  /* 在样式表中添加以下样式 */
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 5px; /* 圆角半径为 5px */
-  margin-bottom: 10px; /* 为了更好地分隔模块 */
-}
-
-.right-section3{
-  /* 在样式表中添加以下样式 */
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 5px; /* 圆角半径为 5px */
-  margin-bottom: 10px; /* 为了更好地分隔模块 */
-}
-
-.right-section4{
-  /* 在样式表中添加以下样式 */
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 5px; /* 圆角半径为 5px */
-  margin-bottom: 10px; /* 为了更好地分隔模块 */
-}
 </style>

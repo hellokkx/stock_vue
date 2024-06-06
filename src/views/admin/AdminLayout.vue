@@ -43,16 +43,24 @@
             <span>首页</span>
           </el-menu-item>
 
-          <el-submenu index="1">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span>策略管理</span>
-            </template>
-            <el-menu-item index="/admin/addUser">上证指数</el-menu-item>
-            <el-menu-item index="2">深证指数</el-menu-item>
-            <el-menu-item index="3">创业板指数</el-menu-item>
-            <el-menu-item index="4">科创50</el-menu-item>
-          </el-submenu>
+<!--          <el-submenu index="1">-->
+<!--            <template slot="title">-->
+<!--              <i class="el-icon-location"></i>-->
+<!--              <span>策略管理</span>-->
+<!--            </template>-->
+<!--            <el-menu-item index="/admin/">上证指数</el-menu-item>-->
+<!--            <el-menu-item index="/admin/">上证指数</el-menu-item>-->
+<!--          </el-submenu>-->
+
+          <el-menu-item index="/admin/AdminStrategy">
+            <i class="el-icon-user"></i>
+            <span>策略审核</span>
+          </el-menu-item>
+
+          <el-menu-item index="/admin/Strategy">
+            <i class="el-icon-user"></i>
+            <span>策略管理</span>
+          </el-menu-item>
 
           <el-menu-item index="/admin/User">
             <i class="el-icon-user"></i>

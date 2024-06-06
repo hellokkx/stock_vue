@@ -37,7 +37,7 @@
         <el-table-column prop="sex" label="性别" align="center"></el-table-column>
         <el-table-column prop="email" label="邮箱" width="150" align="center"></el-table-column>
         <el-table-column prop="address" label="地址" align="center"></el-table-column>
-        <el-table-column prop="signal" label="标志" align="center"></el-table-column>
+        <el-table-column prop="signal" label="简介" align="center"></el-table-column>
         <el-table-column prop="birthday" label="生日" width="150" align="center"></el-table-column>
 
         <el-table-column label="操作" align="left" header-align="50px">

@@ -83,8 +83,8 @@
               <i class="el-icon-location"></i>
               <span>走势预测</span>
             </template>
-            <el-menu-item index="/predict1">自选股走势预测</el-menu-item>
-            <el-menu-item index="3">自定义走势预测</el-menu-item>
+            <el-menu-item index="/predict1">自选股基本情况</el-menu-item>
+            <el-menu-item index="/predict2">自选股走势预测</el-menu-item>
           </el-submenu>
 
           <el-submenu index="4">
@@ -92,19 +92,14 @@
               <i class="el-icon-location"></i>
               <span>精选策略</span>
             </template>
-            <el-menu-item index="3">初级策略</el-menu-item>
+            <el-menu-item index="/strategy">初级策略</el-menu-item>
             <el-menu-item index="3">中级策略</el-menu-item>
-            <el-menu-item index="3">高级策略</el-menu-item>
-            <el-menu-item index="3">VIP策略</el-menu-item>
           </el-submenu>
 
           <el-menu-item index="/class">
               <i class="el-icon-location"></i>
               <span>量化课堂</span>
           </el-menu-item>
-
-
-
         </el-menu>
 
 

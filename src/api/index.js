@@ -52,6 +52,9 @@ export const deleteStarCollection =({symbol,collectionid})=>post('/user/deleteFr
 //获取股票数据
 export const getStockDataBySymbol =({symbol})=>get('/StockData/getStockDataBySymbol',{symbol})
 
+//预测股票数据
+export const predictStockData =({ts_code,alg})=>post('/PythonConnection/startPre',{ts_code,alg})
+
 //获取龙虎榜相关数据
 export const getTopList =()=>get('/StockData/getTopList')
 
@@ -60,7 +63,6 @@ export const getMajorNews =()=>get('/StockData/getMajorNews')
 
 //--------------------用户数据相关--------------------
 //获取用户数据
-// export const getUserList =()=>get('/getAllUser')
 export const getUserList = ()=>get('/user/getAllUser')
 
 //根据用户id获取数据
@@ -72,6 +74,13 @@ export const getUserByAccount = ({userAccount})=>get('/user/getUserByAccount',{u
 //删除用户数据
 export const deleteUser = ({id})=>get('/delete',{id})
 
+
+//-----------------------策略数据相关------------------
+export const getStrategy = ({strname})=>post('/user/RootGetStr',{strname})
+
+export const uploadStrategy = ({strname,strgrade})=>post('/PythonConnection/UploadStr',{strname,strgrade})
+
+export const startStrategy = ({ts_code,str})=>post('/PythonConnection/startStr',{ts_code,str})
 
 
 

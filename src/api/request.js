@@ -19,7 +19,8 @@ axios.defaults.headers.get['Authorization'] = localStorage.getItem('token'); // 
 console.log("heretk"+localStorage.getItem('token'))
 
 //基础url
-axios.defaults.baseURL = 'http://124.71.22.245:10010'; // 云服务器
+axios.defaults.baseURL = 'http://47.115.207.110:10010'; // 云服务器2
+// axios.defaults.baseURL = 'http://124.71.22.245:10010'; // 云服务器
 // axios.defaults.baseURL = 'http://172.29.19.133:10010/';//dez
 // axios.defaults.baseURL = 'http://172.29.15.120:10010/';//lzw
 // axios.defaults.baseURL = 'https://183.232.249.91:11514/';

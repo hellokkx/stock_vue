@@ -24,7 +24,7 @@ const routes = [
     name: 'Register',
     component: ()=>import('@/views/login/Register.vue'),
   },
-    //------------------------1_Layout-------------------------
+    //------------------------1_UserLayout-------------------------
   {
     path: '/',
     name: 'Layout',
@@ -41,6 +41,9 @@ const routes = [
       {path: 'selfSelectStock', name: 'SelfStock', component: () => import('@/views/selfStock/SelfSelectStock.vue')},
       {path: 'detail', name: 'Detail', component: () => import('@/views/stock/detail.vue')},
 
+      //---------------------2_Strategy--------------------------
+      {path: 'strategy', name: 'strategy', component: () => import('@/views/strategy/strategy.vue')},
+
       //---------------------2_Star--------------------------
       {path: 'starList', name: 'starList', component: () => import('@/views/stock/StarList.vue')},
       // {path: 'selfStar', name: 'selfStar', component: () => import('@/views/star/StockList.vue')},
@@ -49,7 +52,8 @@ const routes = [
       {path: 'class', name: 'class', component: () => import('@/views/class/class.vue')},
 
       //---------------------2_Predict--------------------------
-      {path: 'predict1', name: 'predict', component: () => import('@/views/predict/PredictStock.vue')},
+      {path: 'predict1', name: 'predict', component: () => import('@/views/predict/StockDataDetail.vue')},
+      {path: 'predict2', name: 'predict2', component: () => import('@/views/predict/PredictStock.vue')},
     ]
   },
   {
@@ -71,10 +75,11 @@ const routes = [
       {path: 'adminhome', name: 'Home', component: ()  => import('@/views/admin/AdminHome.vue')},
       // ---------------------2_User-----------------------------
       {path: 'User', name: 'User', component: () => import('@/views/user/User.vue')},
-      {path: 'addUser', name: 'AddUser', component: () => import('@/views/user/Index.vue')},
+      // ---------------------2_Strategy-----------------------------
+      {path: 'AdminStrategy', name: 'AdminStrategy', component: () => import('@/views/strategy/AdminStrategy.vue')},
+      {path: 'Strategy', name: 'Strategy', component: () => import('@/views/strategy/Strategys.vue')},
       //---------------------2_Stock--------------------------
-      {path: 'stockList', name: 'StockList', component: () => import('@/views/stock/StockList.vue')},
-      {path: 'starList', name: 'starList', component: () => import('@/views/stock/StarList.vue')},
+      {path: 'stockList', name: 'StockList', component: () => import('@/views/admin/AdminStockList.vue')},
       //---------------------2_SelfStock--------------------------
       {path: 'selfSelectStock', name: 'SelfStock', component: () => import('@/views/selfStock/SelfSelectStock.vue')},
       {path: 'selfSelectStock2', name: 'SelfStock', component: () => import('@/views/selfStock/SelfSelectStock.vue')},

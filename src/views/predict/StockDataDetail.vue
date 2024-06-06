@@ -7,18 +7,18 @@
         <!-- 第一个部分 -->
         <div class="section section1">
           <div class="input-group">
-            <h3>预测模块</h3>
-            <el-input v-model="symbol" placeholder="请输入代码" style="width: 230px;margin-right: 10px;"></el-input>
-            <el-select v-model="model" placeholder="选择模型" style="width: 230px;margin-right: 10px;">
-              <el-option
-                  v-for="item in modelOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-              ></el-option>
-            </el-select>
-            <el-button type="success" @click="showBasicInfo">基本情况</el-button>
-            <el-button type="primary" @click="predict">点击预测</el-button>
+            <h3>基本情况</h3>
+            <el-input v-model="symbol" placeholder="请输入代码" style="width: 350px;margin-right: 20px;"></el-input>
+            <!--            <el-select v-model="model" placeholder="选择模型" style="width: 230px;margin-right: 10px;">-->
+            <!--              <el-option-->
+            <!--                  v-for="item in modelOptions"-->
+            <!--                  :key="item.value"-->
+            <!--                  :label="item.label"-->
+            <!--                  :value="item.value"-->
+            <!--              ></el-option>-->
+            <!--            </el-select>-->
+            <el-button type="primary" @click="showBasicInfo">基本情况</el-button>
+            <!--            <el-button type="primary" @click="predict">点击预测</el-button>-->
           </div>
         </div>
 
@@ -108,12 +108,12 @@ export default {
       title4:'涨跌幅',
       colors: ['#99A9BF', '#F7BA2A', '#FF9900'],
       symbol: '',
-      model: '',
-      modelOptions: [
-        { label: '模型1', value: 'model1' },
-        { label: '模型2', value: 'model2' },
-        { label: '模型3', value: 'model3' }
-      ],
+      // model: '',
+      // modelOptions: [
+      //   { label: '模型1', value: 'model1' },
+      //   { label: '模型2', value: 'model2' },
+      //   { label: '模型3', value: 'model3' }
+      // ],
       response: []
       // 存储后台返回的数据
     };
@@ -2312,11 +2312,12 @@ export default {
 };
 </script>
 
-<style>
-*{
-  padding: 0;
-  margin:0;
-}
+<style scoped>
+
+/**{*/
+/*  padding: 0;*/
+/*  margin:0;*/
+/*}*/
 .container {
   display: flex;
 }
