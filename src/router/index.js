@@ -87,12 +87,8 @@ const routes = [
 
     ]
   },
-
-
     //-------------------------1_UserProfile---------------------------
-  // {path: '/AccountSettingModal', name: 'AccountSettingModal', component: ()=>import('@/views/userProfile/AccountSettingModal.vue')},
-  // {path: '/StockFavorites', name: 'StockFavorites', component: ()=>import('@/views/userProfile/StockFavorites.vue')},
-  // {path: '/UserProfile', name: 'UserProfile', component: ()=>import('@/views/userProfile/UserProfile.vue')},
+  {path: '/UserProfile', name: 'AccountSettingModal', component: ()=>import('@/views/userProfile/PersonalCenter.vue')},
 
 ]
 
