@@ -145,7 +145,10 @@ export default {
   //-------------------------------------代码高亮----------------------------------
   computed: {
     highlightedCode() {
-      const fileName = this.strategy.name + ".py";
+      let fileName = "低估价值选股策略.py";
+      if(this.strategy.id<15){
+        fileName = this.strategy.name + ".py";
+      }
       // const fileName =  "code.py";
       const filePath = "http://localhost:8080/code/" + fileName; // 使用 public/code 路径
 
@@ -257,7 +260,7 @@ export default {
       const fileName = this.strategy.name + ".py";
 
       let filePath = "http://localhost:8080/code/" + "双均线策略.py"; // 注意，这里使用相对路径
-      if(this.strategy.id<10){
+      if(this.strategy.id<15){
         filePath = "http://localhost:8080/code/" + fileName; // 注意，这里使用相对路径
       }
       console.log(filePath);
