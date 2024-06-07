@@ -52,6 +52,7 @@ def market_open(context):
     if (current_price > 1.01*MA5) and (cash > 0):
         # 记录这次买入
         log.info("价格高于均价 1%%, 买入 %s" % (security))
+        print("当前可用资金为{0}, position_value为{0}".format(cash, context.portfolio.positions_value))
         # 用所有 cash 买入股票
         order_value(security, cash)
     # 如果上一时间点价格低于五天平均价, 则空仓卖出

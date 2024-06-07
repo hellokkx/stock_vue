@@ -82,6 +82,8 @@ export const uploadStrategy = ({strname,strgrade})=>post('/PythonConnection/Uplo
 
 export const startStrategy = ({ts_code,str})=>post('/PythonConnection/startStr',{ts_code,str})
 
+export const deleteStrategy = ({strid})=>post('/user/RootDeleteStr',{strid})
+
 
 
 

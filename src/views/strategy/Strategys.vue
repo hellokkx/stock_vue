@@ -2,7 +2,7 @@
   <div>
     <el-row :gutter="20">
       <el-col :span="12">
-        <el-card style="width: 500px; margin-left: 20px;">
+        <el-card style="width: 500px; margin-left: 20px;margin-top: 10px">
           <div slot="header" class="clearfix">
             <span class="bold-text">VIP 策略管理</span>
           </div>
@@ -14,6 +14,7 @@
             </el-table-column>
 <!--            <el-table-column prop="ifpass" label="审核"></el-table-column>-->
             <el-table-column prop="strdate" label="上传日期"></el-table-column>
+            <el-table-column prop="strid" label="id" v-if="false"></el-table-column>
             <el-table-column label="操作" width="150">
               <template slot-scope="scope">
                 <el-button type="primary" size="small" @click="downloadStrategy(scope.row)">下载</el-button>
@@ -27,7 +28,7 @@
         </el-card>
       </el-col>
       <el-col :span="12">
-        <el-card style="width: 500px; margin-right: 20px;">
+        <el-card style="width: 500px; margin-right: 20px;margin-top: 10px">
           <div slot="header" class="clearfix">
             <span class="bold-text">普通策略管理</span>
           </div>
@@ -39,6 +40,7 @@
             </el-table-column>
 <!--            <el-table-column prop="ifpass" label="审核"></el-table-column>-->
             <el-table-column prop="strdate" label="上传日期"></el-table-column>
+            <el-table-column prop="strid" label="id" v-if="false"></el-table-column>
             <el-table-column label="操作" width="180">
               <template slot-scope="scope">
                 <el-button type="primary" size="small" @click="downloadStrategy(scope.row)">下载</el-button>
@@ -103,7 +105,7 @@
 </template>
 
 <script>
-import {getStrategy,uploadStrategy} from "@/api";
+import {deleteStrategy, getStrategy, uploadStrategy} from "@/api";
 
 export default {
   data() {
@@ -128,7 +130,7 @@ export default {
   },
 
   methods: {
-    //获取策略数据
+    //------------------------------------获取策略数据---------------------------------------
     getStrategyData() {
       var strname=''
       getStrategy({strname}).then(res=>{
@@ -177,12 +179,16 @@ export default {
       })
     },
 
+    //------------------------------------下载策略数据---------------------------------------
     downloadStrategy(row) {
       console.log('Download:', row);
       const fileName = row.strname + ".py";
       // const filePath = "/code/" + fileName; // 注意，这里使用相对路径
-      const filePath = "http://localhost:8080/code/" + fileName; // 注意，这里使用相对路径
 
+      let filePath = "http://localhost:8080/code/" + "小市值策略.py"; // 注意，这里使用相对路径
+      if(row.strid<10){
+        filePath = "http://localhost:8080/code/" + fileName; // 注意，这里使用相对路径
+      }
       console.log(filePath);
 
       // 创建一个隐藏的a标签
@@ -198,8 +204,20 @@ export default {
       document.body.removeChild(link);
     },
 
+    //---------------------------------删除策略-------------------------------------------
     deleteStrategy(row) {
       console.log('Delete:', row);
+      var strid=row.strid
+      deleteStrategy({strid}).then(res=>{
+        if(res.code===200){
+          this.$message.success(res.msg)
+          console.log(res)
+        }
+      }).catch(err=>{
+        //异常处理
+        console.log(err)
+        this.$message.error(err.data)
+      })
     },
 
     //----------------------------------------新建策略---------------------------------------
@@ -222,14 +240,18 @@ export default {
       this.form.level=''
     },
 
-    //-----------------------------------------------------------------------------------
+    //----------------------------------预览-----------------------------------------
     reviewStrategy(row) {
       console.log('Review:', row);
     },
+
+    //---------------------------------打开新建策略的弹窗-------------------------------------------
     openCreateStrategyDialog() {
       this.fileList = []; // 清空 fileList
       this.dialogVisible = true;
     },
+
+    //---------------------------------取消按钮------------------------------------------
     cancel(){
       this.dialogVisible = false;
       this.fileList = []; // 清空 fileList
@@ -239,6 +261,8 @@ export default {
     clearno() {
       this.noFileinList=false
     },
+
+    //---------------------------------处理上传文档-------------------------------------------
     handleSuccess(response, file) {
       this.fileList.push(file);
     },
