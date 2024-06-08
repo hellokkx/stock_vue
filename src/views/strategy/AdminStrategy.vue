@@ -41,7 +41,7 @@
         <div class="box-container">
           <!--        Info部分-->
           <div class="Info">
-            <h2 style="margin-left: 20px;margin-bottom:30px;text-align: center;color: black">策略审核</h2>
+            <h2 style="margin-left: 20px;margin-bottom:40px;text-align: center;color: black">策略审核</h2>
             <div class="info-row" style="margin-bottom: 25px;margin-top: 10px">
               <div class="label">
                 <span>策略名</span>
@@ -66,7 +66,7 @@
                 <span>策略代码 </span>
               </div>
               <div class="content">
-                <el-button type="primary" @click="downloadStrategy">下载文件</el-button>
+                <el-button type="primary" plain @click="downloadStrategy">下载文件</el-button>
               </div>
             </div>
             <div class="info-row">
@@ -85,11 +85,16 @@
                 <span>是否入池</span>
               </div>
               <div class="content">
-                <el-select v-model="ifpass" placeholder="请选择是否入池">
+                <el-select v-model="strifpass" placeholder="请选择是否入池">
                   <el-option label="是" value="YES"></el-option>
                   <el-option label="否" value="NO"></el-option>
                 </el-select>
               </div>
+            </div>
+
+            <div slot="footer" class="dialog-footer">
+              <el-button type="primary" @click="checkStrategy">确认审核</el-button>
+              <el-button type="info" plain @click="cancel" style="margin-left: 30px">取消</el-button>
             </div>
             <!--          <el-button type="danger" @click="deleteStrategy">删除策略</el-button>-->
           </div>
@@ -120,14 +125,14 @@
 import Prism from 'prismjs';
 import 'prismjs/components/prism-python'; // 导入Python语言的语法规则
 import 'prismjs/themes/prism-tomorrow.css';
-import {addToCollection, getStocklist, getStrategy} from "@/api";
+import {addToCollection, checkStrategy, getStocklist, getStrategy} from "@/api";
 import Cookies from "js-cookie";
 
 export default {
   name: 'StockList',
   data() {
     return {
-      ifpass:'',
+      strifpass:'',
       strategrade:'',
       auditVisible:false,
       user:Cookies.get('user')?JSON.parse(Cookies.get('user')):{},
@@ -165,8 +170,6 @@ export default {
             this.$message.error('无法下载代码文件');
           });
 
-      // let language = Prism.languages.javascript; // 你的代码的语言
-      // return Prism.highlight(this.code, language);
       let language = Prism.languages.python; // 你的代码的语言
       return Prism.highlight(this.code, language,'python');
     },
@@ -181,7 +184,9 @@ export default {
   methods: {
     visable(row){
       this.auditVisible=true
-      this.strategy = { name: row.strname, account: row.account,id: row.strid };
+      this.strifpass=row.ifpass
+      this.strategrade=row.strgrade
+      this.strategy = { name: row.strname, account: row.account, id: row.strid};
     },
 
     //-------------------------------------------获取策略数据------------------------------------
@@ -278,6 +283,31 @@ export default {
       document.body.removeChild(link);
     },
 
+    //------------------------------------确认审核------------------------------
+    checkStrategy(){
+      var strid=this.strategy.id
+      var strname=this.strategy.name
+      var ifpass= this.strifpass
+      var strgrade=this.strategrade
+
+      checkStrategy({strid,ifpass,strname,strgrade}).then(res => {
+        console.log(res)
+        if (res.code === 200) {
+          this.$message.info("审核完成");
+          this.getData(); // 重新加载数据
+        }
+      }).catch(err => {
+        console.log(err);
+        this.$message.error(err.data);
+      });
+    },
+
+    //------------------------------------取消------------------------------
+    cancel(){
+      this.auditVisible=false
+      this.strategrade=''
+      this.ifpass=''
+    }
   }
 };
 </script>
@@ -327,6 +357,10 @@ export default {
   align-items: flex-start;
 }
 
+.dialog-footer{
+  text-align: center;
+  margin-top: 40px;
+}
 .toolbar {
   display: flex;
   justify-content: center;

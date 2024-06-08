@@ -84,6 +84,8 @@ export const startStrategy = ({ts_code,str})=>post('/PythonConnection/startStr',
 
 export const deleteStrategy = ({strid})=>post('/user/RootDeleteStr',{strid})
 
+export const checkStrategy = ({strid,ifpass,strname,strgrade})=>post('/user/RootCheckStr',{strid,ifpass,strname,strgrade})
+
 
 
 

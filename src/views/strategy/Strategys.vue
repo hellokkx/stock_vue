@@ -212,6 +212,7 @@ export default {
         if(res.code===200){
           this.$message.success(res.msg)
           console.log(res)
+          this.getStrategyData()
         }
       }).catch(err=>{
         //异常处理
@@ -230,6 +231,7 @@ export default {
         if(res.code===200){
           console.log(res)
           this.dialogVisible = false;
+          this.getStrategyData()
         }
       }).catch(err=>{
         //异常处理

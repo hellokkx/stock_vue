@@ -3,20 +3,20 @@
   <div class="base">
 
 <!--    验证码模块-->
-    <el-card class="cover" v-if="loginUser.userid">
+<!--    <el-card class="cover" v-if="loginUser.userid">-->
 
-      <slide-verify :l="42"
-                    :r="10"
-                    :w="310"
-                    :h="155"
-                    :accuracy="6"
-                    slider-text="向右滑动"
-                    @success="onSuccess"
-                    @fail="onFail"
-                    @refresh="onRefresh"
-      ></slide-verify>
+<!--      <slide-verify :l="42"-->
+<!--                    :r="10"-->
+<!--                    :w="310"-->
+<!--                    :h="155"-->
+<!--                    :accuracy="6"-->
+<!--                    slider-text="向右滑动"-->
+<!--                    @success="onSuccess"-->
+<!--                    @fail="onFail"-->
+<!--                    @refresh="onRefresh"-->
+<!--      ></slide-verify>-->
 
-    </el-card>
+<!--    </el-card>-->
 
 
     <!-- 登录界面 -->
@@ -264,10 +264,9 @@ export default {
         if(res.code===200){
           this.loginUser.userAccount=res.response.account
           this.loginUser.userid=res.response.userid
+          //表示把token存储到本地的“token”这个key里面
           localStorage.setItem("token",res.token)
-          //表示把res.data.data.token这个value存储到本地的“token”这个key里面
-
-          // this.onSuccess();
+          this.onSuccess();
         }
       }).catch(err=>{
         //异常处理
