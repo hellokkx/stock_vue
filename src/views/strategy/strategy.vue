@@ -37,21 +37,24 @@
     <!-- 策略信息 -->
     <div class="strategy-info">
       <table>
-        <tr v-for="(Info, index) in Info" :key="index + Info.income">
+<!--        <tr v-for="(Info, index) in Info" :key="index + Info.income">-->
+        <tr>
           <td>策略收益<br> {{ Info.income }}</td>
-          <td>基准收益<br>  {{ Info.benchmark }}</td>
-          <td>年化收益<br> {{ Info.annualized_return }}</td>
+          <td>基准收益<br>  {{ Info.benchmarkReturns }}</td>
+          <td>年化收益<br> {{ Info.annualizedIncome }}</td>
           <td>Beta<br>  {{ Info.beta }}</td>
-          <td>盈利次数<br> {{ Info.profit_times }}</td>
+          <td>索提诺比率<br> {{ Info.sortino }}</td>
         </tr>
-        <tr v-for="(Info, index) in Info" :key="index">
+
+        <tr>
           <td>Alpha<br> {{ Info.alpha }}</td>
           <td>Sharpe<br>{{ Info.sharpe }}</td>
-          <td>最大回撤<br>{{ Info.max_drawdown }}</td>
-          <td>盈亏比<br>{{ Info.profit_loss_ratio }}</td>
-          <td>亏损次数<br>{{ Info.loss_times }}</td>
+          <td>最大回撤<br>{{ Info.maxRollback }}</td>
+          <td>信息比例<br>{{ Info.informationRatio }}</td>
+          <td>夏普指数<br>{{ Info.sharpe }}</td>
         </tr>
       </table>
+
     </div>
     <div class="chart" ref="chart" ></div>
 
@@ -63,7 +66,7 @@ import * as echarts from 'echarts';
 // import $ from 'jquery';
 import Prism from 'prismjs';
 import 'prismjs/themes/prism-tomorrow.css';
-import {startStrategy, uploadStrategy} from "@/api";
+import {startStrategy} from "@/api";
 export default {
   name: "Strategy",
   data() {
@@ -84,20 +87,19 @@ export default {
       value: '',
       input:'',
       selectedPythonVersion: 'Python3',
-      Info: [
-        {
-          income: '94.05%',
-          benchmark: '43.65%',
-          annualized_return: '433.67%',
-          beta: '0.668',
-          profit_times: '40',
-          alpha: '3.321',
-          sharpe: '14.164',
-          max_drawdown: '6.108%',
-          profit_loss_ratio: '27.059',
-          loss_times: '3'
-        }
-      ],
+      Info: {
+          algorithmVolatility:'',
+          alpha:'',
+          annualizedIncome:'',
+          benchmarkReturns:'',
+          benchmarkVolatility:'',
+          beta:'',
+          income:'',
+          informationRatio:'',
+          maxRollback:'',
+          sharpe:'',
+          sortino:'',
+      },
       isRunning: false,
       progress: 0,
       statusMessage: '',
@@ -167,14 +169,15 @@ export default {
       var str=this.value
       startStrategy({ts_code,str}).then(res=>{
         if(res.code===200){
-          // console.log(res)
-          this.dialogVisible = false;
-          const data=res.response.graph
-          // const data0 = data.map(item => [item.data, item.benchmark, item.strategy]);
-          const data0 = data.map(item => [item.data, parseFloat(item.benchmark) / 100, parseFloat(item.strategy) / 100]);
-          // const data0 = this.generateData('2023/10/1', '2024/4/1');
-          console.log("data0"+data0)
+          console.log(res)
+          this.dialogVisible = false
 
+          this.Info=res.response.info
+          const data=res.response.graph
+
+          //数据处理
+          const data0 = data.map(item => [item.data, parseFloat(item.benchmark), parseFloat(item.strategy)]);
+          // const data0 = this.generateData('2023/10/1', '2024/4/1');
           const dates = data0.map(item => item[0]);
           const benchmarkReturns = data0.map(item => item[1]);
           const strategyReturns = data0.map(item => item[2]);
@@ -188,8 +191,8 @@ export default {
                 const benchmarkReturn = params[1].data.toFixed(4);
                 return `
       ${date}<br/>
-      策略收益：${strategyReturn}<br/>
-      基准收益：${benchmarkReturn}`;
+      策略收益：${strategyReturn}%<br/>
+      基准收益：${benchmarkReturn}%`;
               }
             },
             dataZoom: [
@@ -219,7 +222,7 @@ export default {
             yAxis: {
               type: 'value',
               axisLabel: {
-                formatter: '{value}' // 纵轴数据类型是百分比
+                formatter: '{value}%' // 纵轴数据类型是百分比
               },
               axisLine: {
                 lineStyle: {
@@ -313,4 +316,6 @@ export default {
   width: 100%;
   height: 400px;
 }
+
+
 </style>

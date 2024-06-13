@@ -5,7 +5,7 @@
     <el-card style="width: 1030px; margin-left: 20px;margin-top: 10px">
       <div class="container">
         <!--      <div class="handle-box">-->
-        <h3 style="margin-left: 20px">策略审核</h3>
+        <h3 style="margin-left: 20px">算法审核</h3>
 
         <el-table
             :data="tableData"
@@ -18,13 +18,13 @@
             :default-sort = "{prop: 'symbol', order: 'transactionDate'}"
         >
 
-          <el-table-column prop="strid" label="id" width="55" align="center"></el-table-column>
-          <el-table-column prop="strname" label="策略名" width="185"align="center"></el-table-column>
+          <el-table-column prop="algid" label="id" width="55" align="center"></el-table-column>
+          <el-table-column prop="algname" label="算法名" width="185"align="center"></el-table-column>
           <el-table-column prop="account" label="上传者账号" align="center"></el-table-column>
           <!--        <el-table-column prop="symbol" label="全球唯一标识符" align="center"></el-table-column>-->
           <el-table-column prop="ifpass" label="是否在策略池中" align="center"></el-table-column>
-          <el-table-column prop="strdate" label="上传日期" align="center"></el-table-column>
-          <el-table-column prop="strgrade" label="策略等级" align="center"></el-table-column>
+          <el-table-column prop="algdate" label="上传日期" align="center"></el-table-column>
+          <el-table-column prop="alggrade" label="算法等级" align="center"></el-table-column>
 
           <el-table-column label="策略审核" align="center">
             <template v-slot="scope">
@@ -41,13 +41,13 @@
         <div class="box-container">
           <!--        Info部分-->
           <div class="Info">
-            <h2 style="margin-left: 20px;margin-bottom:40px;text-align: center;color: black">策略审核</h2>
+            <h2 style="margin-left: 20px;margin-bottom:40px;text-align: center;color: black">算法审核</h2>
             <div class="info-row" style="margin-bottom: 25px;margin-top: 10px">
               <div class="label">
-                <span>策略名</span>
+                <span>算法名</span>
               </div>
               <div class="content">
-                <span>{{ strategy.name }}</span>
+                <span>{{ algorithm.name }}</span>
               </div>
             </div>
 
@@ -56,17 +56,17 @@
                 <span>上传者账号</span>
               </div>
               <div class="content">
-                <span>{{ strategy.account }}</span>
+                <span>{{ algorithm.account }}</span>
               </div>
             </div>
 
 
             <div class="info-row">
               <div class="label">
-                <span>策略代码 </span>
+                <span>策略代码</span>
               </div>
               <div class="content">
-                <el-button type="primary" plain @click="downloadStrategy">下载文件</el-button>
+                <el-button type="primary" plain @click="downloadAlgorithm">下载文件</el-button>
               </div>
             </div>
             <div class="info-row">
@@ -74,7 +74,7 @@
                 <span>策略等级</span>
               </div>
               <div class="content">
-                <el-select v-model="strategrade" placeholder="请输入策略等级">
+                <el-select v-model="alggrade" placeholder="请输入策略等级">
                   <el-option label="普通等级" value="User"></el-option>
                   <el-option label="VIP等级" value="Vip"></el-option>
                 </el-select>
@@ -85,7 +85,7 @@
                 <span>是否入池</span>
               </div>
               <div class="content">
-                <el-select v-model="strifpass" placeholder="请选择是否入池">
+                <el-select v-model="algifpass" placeholder="请选择是否入池">
                   <el-option label="是" value="YES"></el-option>
                   <el-option label="否" value="NO"></el-option>
                 </el-select>
@@ -93,7 +93,7 @@
             </div>
 
             <div slot="footer" class="dialog-footer">
-              <el-button type="primary" @click="checkStrategy">确认审核</el-button>
+              <el-button type="primary" @click="checkAlgorithm">确认审核</el-button>
               <el-button type="info" plain @click="cancel" style="margin-left: 30px">取消</el-button>
             </div>
             <!--          <el-button type="danger" @click="deleteStrategy">删除策略</el-button>-->
@@ -102,7 +102,7 @@
           <!--        Code部分-->
           <div class="code">
             <div class="toolbar">
-              <h3 style="flex-grow: 1;  display: flex;  justify-content: center;margin-left: 65px">{{ strategy.name }}</h3>
+              <h3 style="flex-grow: 1;  display: flex;  justify-content: center;margin-left: 65px">{{ algorithm.name }}</h3>
               <div style="display: flex;justify-content: flex-end;">
                 <el-button icon="el-icon-search"></el-button>
                 <el-button icon="el-icon-setting"></el-button>
@@ -125,20 +125,20 @@
 import Prism from 'prismjs';
 import 'prismjs/components/prism-python'; // 导入Python语言的语法规则
 import 'prismjs/themes/prism-tomorrow.css';
-import {addToCollection, checkStrategy, getStocklist, getStrategy} from "@/api";
+import {addToCollection, checkAlgorithm, getAlgorithm} from "@/api";
 import Cookies from "js-cookie";
 
 export default {
   name: 'StockList',
   data() {
     return {
-      strifpass:'',
-      strategrade:'',
+      algifpass:'',
+      alggrade:'',
       auditVisible:false,
       user:Cookies.get('user')?JSON.parse(Cookies.get('user')):{},
       //表格属性
       tableData: [],
-      strategy: {
+      algorithm: {
         name: '',
         account: '',
         id:'',
@@ -151,8 +151,8 @@ export default {
   computed: {
     highlightedCode() {
       let fileName = "低估价值选股策略.py";
-      if(this.strategy.id<15){
-        fileName = this.strategy.name + ".py";
+      if(this.algorithm.id<4){
+        fileName = this.algorithm.name + ".py";
       }
       // const fileName =  "code.py";
       const filePath = "http://localhost:8080/code/" + fileName; // 使用 public/code 路径
@@ -184,15 +184,15 @@ export default {
   methods: {
     visable(row){
       this.auditVisible=true
-      this.strifpass=row.ifpass
-      this.strategrade=row.strgrade
-      this.strategy = { name: row.strname, account: row.account, id: row.strid};
+      this.algifpass=row.ifpass
+      this.alggrade=row.alggrade
+      this.algorithm = { name: row.algname, account: row.account, id: row.algid};
     },
 
-    //-------------------------------------------获取策略数据------------------------------------
+    //-------------------------------------------获取算法数据------------------------------------
     getData() {
-      var strname=''
-      getStrategy({strname}).then(res=>{
+      var algname=''
+      getAlgorithm({algname}).then(res=>{
         if(res.code===200){
           console.log(res)
           this.tableData=res.response
@@ -200,7 +200,7 @@ export default {
           // 遍历数据，处理日期属性
           this.tableData.forEach(item => {
             // 将日期字符串转换为 Date 对象
-            let date = new Date(item.strdate);
+            let date = new Date(item.algdate);
 
             // 获取年月日信息
             let year = date.getFullYear();
@@ -208,7 +208,7 @@ export default {
             let day = date.getDate().toString().padStart(2, '0');
 
             // 拼接日期字符串
-            item.strdate = `${year}-${month}-${day}`;
+            item.algdate = `${year}-${month}-${day}`;
           });
 
         }
@@ -259,13 +259,13 @@ export default {
     },
 
     //------------------------------------下载策略数据---------------------------------------
-    downloadStrategy() {
+    downloadAlgorithm() {
       console.log('-------------Downloading---------------');
-      console.log(this.strategy)
-      const fileName = this.strategy.name + ".py";
+      console.log(this.algorithm)
+      const fileName = this.algorithm.name + ".py";
 
       let filePath = "http://localhost:8080/code/" + "双均线策略.py"; // 注意，这里使用相对路径
-      if(this.strategy.id<15){
+      if(this.algorithm.id<15){
         filePath = "http://localhost:8080/code/" + fileName; // 注意，这里使用相对路径
       }
       console.log(filePath);
@@ -284,16 +284,17 @@ export default {
     },
 
     //------------------------------------确认审核------------------------------
-    checkStrategy(){
-      var strid=this.strategy.id
-      var strname=this.strategy.name
-      var ifpass= this.strifpass
-      var strgrade=this.strategrade
+    checkAlgorithm(){
+      var algid=this.algorithm.id
+      var algname=this.algorithm.name
+      var ifpass= this.algifpass
+      var alggrade=this.alggrade
 
-      checkStrategy({strid,ifpass,strname,strgrade}).then(res => {
+      checkAlgorithm({algid,ifpass,algname,alggrade}).then(res => {
         console.log(res)
         if (res.code === 200) {
           this.$message.info("审核完成");
+          this.auditVisible=false
           this.getData(); // 重新加载数据
         }
       }).catch(err => {
@@ -305,7 +306,7 @@ export default {
     //------------------------------------取消------------------------------
     cancel(){
       this.auditVisible=false
-      this.strategrade=''
+      this.alggrade=''
       this.ifpass=''
     }
   }

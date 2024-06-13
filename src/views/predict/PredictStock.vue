@@ -119,8 +119,8 @@ export default {
             dataZoom: [
               {
                 type: 'inside',
-                start: 40,
-                end: 100,
+                start: 30,
+                end: 80,
                 height: 10 // 设置滑动条高度为20像素
               },
               {

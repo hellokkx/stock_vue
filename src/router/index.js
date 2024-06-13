@@ -52,8 +52,8 @@ const routes = [
       {path: 'class', name: 'class', component: () => import('@/views/class/class.vue')},
 
       //---------------------2_Predict--------------------------
-      {path: 'predict1', name: 'predict', component: () => import('@/views/predict/StockDataDetail.vue')},
-      {path: 'predict2', name: 'predict2', component: () => import('@/views/predict/PredictStock.vue')},
+      {path: 'stockDetail', name: 'stockDetail', component: () => import('@/views/predict/StockDataDetail.vue')},
+      {path: 'predictStock', name: 'predictStock', component: () => import('@/views/predict/PredictStock.vue')},
     ]
   },
   {
@@ -76,10 +76,13 @@ const routes = [
       // ---------------------2_User-----------------------------
       {path: 'User', name: 'User', component: () => import('@/views/user/User.vue')},
       // ---------------------2_Strategy-----------------------------
-      {path: 'AdminStrategy', name: 'AdminStrategy', component: () => import('@/views/strategy/AdminStrategy.vue')},
-      {path: 'Strategy', name: 'Strategy', component: () => import('@/views/strategy/Strategys.vue')},
+      {path: 'checkStrategy', name: 'AdminStrategy', component: () => import('@/views/strategy/checkStrategy.vue')},
+      {path: 'Strategy', name: 'Strategy', component: () => import('@/views/strategy/adminStrategy.vue')},
       //---------------------2_Stock--------------------------
       {path: 'stockList', name: 'StockList', component: () => import('@/views/admin/AdminStockList.vue')},
+      //---------------------2_Algorithm--------------------------
+      {path: 'checkAlgorithm', name: 'CheckAlgorithm', component: () => import('@/views/algorithm/CheckAlgorithm.vue')},
+      {path: 'Algorithm', name: 'Algorithm', component: () => import('@/views/algorithm/adminAlgorithm.vue')},
       //---------------------2_SelfStock--------------------------
       {path: 'selfSelectStock', name: 'SelfStock', component: () => import('@/views/selfStock/SelfSelectStock.vue')},
       {path: 'selfSelectStock2', name: 'SelfStock', component: () => import('@/views/selfStock/SelfSelectStock.vue')},

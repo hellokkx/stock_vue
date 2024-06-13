@@ -38,26 +38,40 @@
           style="width: 180px;min-height:calc(100vh - 62px); overflow: hidden;margin-right: 2px;background-color:white;">
         <el-menu :default-active="$route.path" router class="el-menu-demo">
           <!--通过路由router的方式进行页面切换-->
-          <el-menu-item index="/admin/adminhome">
-            <i class="el-icon-s-home"></i>
-            <span>首页</span>
-          </el-menu-item>
+<!--          <el-menu-item index="/admin/adminhome">-->
+<!--            <i class="el-icon-s-home"></i>-->
+<!--            <span>首页</span>-->
+<!--          </el-menu-item>-->
 
           <el-submenu index="1">
             <template slot="title">
               <i class="el-icon-location"></i>
               <span>策略处理</span>
             </template>
-            <el-menu-item index="/admin/AdminStrategy">
-              <i class="el-icon-user"></i>
+            <el-menu-item index="/admin/checkStrategy">
+<!--              <i class="el-icon-user"></i>-->
               <span>策略审核</span>
             </el-menu-item>
             <el-menu-item index="/admin/Strategy">
-              <i class="el-icon-user"></i>
+<!--              <i class="el-icon-user"></i>-->
               <span>策略管理</span>
             </el-menu-item>
           </el-submenu>
 
+          <el-submenu index="2">
+            <template slot="title">
+              <i class="el-icon-location"></i>
+              <span>算法处理</span>
+            </template>
+            <el-menu-item index="/admin/checkAlgorithm">
+              <!--              <i class="el-icon-user"></i>-->
+              <span>算法审核</span>
+            </el-menu-item>
+            <el-menu-item index="/admin/Algorithm">
+              <!--              <i class="el-icon-user"></i>-->
+              <span>算法管理</span>
+            </el-menu-item>
+          </el-submenu>
 
           <el-menu-item index="/admin/User">
             <i class="el-icon-user"></i>

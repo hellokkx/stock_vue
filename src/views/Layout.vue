@@ -81,19 +81,20 @@
           <el-submenu index="3">
             <template slot="title">
               <i class="el-icon-location"></i>
-              <span>走势预测</span>
+              <span>算法研究</span>
             </template>
-            <el-menu-item index="/predict1">自选股基本情况</el-menu-item>
-            <el-menu-item index="/predict2">自选股走势预测</el-menu-item>
+            <el-menu-item index="/1233">精选算法</el-menu-item>
+            <el-menu-item index="/stockDetail">股票情况</el-menu-item>
+            <el-menu-item index="/predictStock">走势预测</el-menu-item>
           </el-submenu>
 
           <el-submenu index="4">
             <template slot="title">
               <i class="el-icon-location"></i>
-              <span>精选策略</span>
+              <span>策略研究</span>
             </template>
-            <el-menu-item index="/strategy">初级策略</el-menu-item>
-            <el-menu-item index="3">中级策略</el-menu-item>
+            <el-menu-item index="/strategy">股票回测</el-menu-item>
+            <el-menu-item index="3">精选策略</el-menu-item>
           </el-submenu>
 
           <el-menu-item index="/class">
