@@ -43,6 +43,7 @@ const routes = [
 
       //---------------------2_Strategy--------------------------
       {path: 'strategy', name: 'strategy', component: () => import('@/views/strategy/strategy.vue')},
+      {path: 'userStrategy', name: 'userStrategy', component: () => import('@/views/strategy/userStrategy.vue')},
 
       //---------------------2_Star--------------------------
       {path: 'starList', name: 'starList', component: () => import('@/views/stock/StarList.vue')},
@@ -54,6 +55,7 @@ const routes = [
       //---------------------2_Predict--------------------------
       {path: 'stockDetail', name: 'stockDetail', component: () => import('@/views/predict/StockDataDetail.vue')},
       {path: 'predictStock', name: 'predictStock', component: () => import('@/views/predict/PredictStock.vue')},
+      {path: 'algorithm', name: 'algorithm', component: () => import('@/views/algorithm/userAlgorithm.vue')},
     ]
   },
   {

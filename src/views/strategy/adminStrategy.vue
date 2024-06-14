@@ -186,7 +186,7 @@ export default {
       // const filePath = "/code/" + fileName; // 注意，这里使用相对路径
 
       let filePath = "http://localhost:8080/code/" + "小市值策略.py"; // 注意，这里使用相对路径
-      if(row.strid<10){
+      if(row.strid<14){
         filePath = "http://localhost:8080/code/" + fileName; // 注意，这里使用相对路径
       }
       console.log(filePath);

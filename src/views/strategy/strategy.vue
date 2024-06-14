@@ -212,10 +212,17 @@ export default {
             xAxis: {
               type: 'category',
               data: dates,
-              axisLine: {
+              // axisLine: {
+              //   lineStyle: {
+              //     color: '#000',
+              //     width: 2
+              //   }
+              // }
+              splitLine: {
+                show: true,
                 lineStyle: {
-                  color: '#000',
-                  width: 2
+                  color: '#e0e6f1',
+                  type: 'solid'
                 }
               }
             },

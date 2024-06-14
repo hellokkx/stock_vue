@@ -74,8 +74,8 @@
               <i class="el-icon-location"></i>
               <span>自选股</span>
             </template>
-            <el-menu-item index="/selfSelectStock">自定义自选股自组合1</el-menu-item>
-            <el-menu-item index="/selfSelectStock2">自定义自选股自组合2</el-menu-item>
+            <el-menu-item index="/selfSelectStock">自定义自选股组合1</el-menu-item>
+            <el-menu-item index="/selfSelectStock2">自定义自选股组合2</el-menu-item>
           </el-submenu>
 
           <el-submenu index="3">
@@ -83,7 +83,7 @@
               <i class="el-icon-location"></i>
               <span>算法研究</span>
             </template>
-            <el-menu-item index="/1233">精选算法</el-menu-item>
+            <el-menu-item index="/algorithm">精选算法</el-menu-item>
             <el-menu-item index="/stockDetail">股票情况</el-menu-item>
             <el-menu-item index="/predictStock">走势预测</el-menu-item>
           </el-submenu>
@@ -93,8 +93,8 @@
               <i class="el-icon-location"></i>
               <span>策略研究</span>
             </template>
+            <el-menu-item index="/userStrategy">精选策略</el-menu-item>
             <el-menu-item index="/strategy">股票回测</el-menu-item>
-            <el-menu-item index="3">精选策略</el-menu-item>
           </el-submenu>
 
           <el-menu-item index="/class">

@@ -99,7 +99,7 @@ export const checkStrategy = ({strid,ifpass,strname,strgrade})=>post('/user/Root
 export const getAlgorithm = ({algname})=>post('/user/RootGetAlg',{algname})
 
 //用户查看算法
-export const getUserAlgorithm = ({algname})=>post('/user/RootGetAlg',{algname})
+export const getUserAlgorithm = ({algname})=>post('/user/getAlg',{algname})
 
 //上传算法
 export const uploadAlgorithm = ({algname,alggrade})=>post('/PythonConnection/UploadAlg',{algname,alggrade})

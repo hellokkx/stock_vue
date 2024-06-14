@@ -5,7 +5,7 @@
     <el-card style="width: 1030px; margin-left: 20px;margin-top: 10px">
       <div class="container">
         <!--      <div class="handle-box">-->
-        <h3 style="margin-left: 20px">精选策略</h3>
+        <h3 style="margin-left: 20px">精选算法</h3>
 
         <el-table
             :data="tableData"
@@ -18,18 +18,18 @@
             :default-sort = "{prop: 'symbol', order: 'transactionDate'}"
         >
 
-          <el-table-column prop="strid" label="id" width="55" align="center"></el-table-column>
-          <el-table-column prop="strname" label="策略名" width="185"align="center"></el-table-column>
+          <el-table-column prop="algid" label="id" width="55" align="center"></el-table-column>
+          <el-table-column prop="algname" label="算法名" width="185"align="center"></el-table-column>
           <el-table-column prop="account" label="上传者账号" align="center"></el-table-column>
           <!--        <el-table-column prop="symbol" label="全球唯一标识符" align="center"></el-table-column>-->
 <!--          <el-table-column prop="ifpass" label="是否在策略池中" align="center"></el-table-column>-->
-          <el-table-column prop="strdate" label="上传日期" align="center"></el-table-column>
-          <el-table-column prop="strgrade" label="策略等级" align="center"></el-table-column>
+          <el-table-column prop="algdate" label="上传日期" align="center"></el-table-column>
+          <el-table-column prop="alggrade" label="算法等级" align="center"></el-table-column>
 
-          <el-table-column label="精选策略" width="150" align="center">
+          <el-table-column label="策略审核" width="160" align="center">
             <template v-slot="scope">
               <el-button type="info" plain @click="visable(scope.row)">预览</el-button>
-              <el-button type="primary" plain @click="downloadStrategy(scope.row)">下载</el-button>
+              <el-button type="primary" plain @click="downloadAlgorithm(scope.row)">下载</el-button>
             </template>
           </el-table-column>
 
@@ -43,7 +43,7 @@
         <!--        Code部分-->
         <div class="code">
           <div class="toolbar">
-            <h3 style="flex-grow: 1;  display: flex;  justify-content: center;margin-left: 65px">{{ strategy.name }}</h3>
+            <h3 style="flex-grow: 1;  display: flex;  justify-content: center;margin-left: 65px">{{ algorithm.name }}</h3>
             <div style="display: flex;justify-content: flex-end;">
               <el-button icon="el-icon-search"></el-button>
               <el-button icon="el-icon-setting"></el-button>
@@ -66,20 +66,20 @@
 import Prism from 'prismjs';
 import 'prismjs/components/prism-python'; // 导入Python语言的语法规则
 import 'prismjs/themes/prism-tomorrow.css';
-import {addToCollection, checkStrategy, getStocklist, getUserStrategy} from "@/api";
+import {addToCollection, checkAlgorithm, getUserAlgorithm} from "@/api";
 import Cookies from "js-cookie";
 
 export default {
   name: 'StockList',
   data() {
     return {
-      strifpass:'',
-      strategrade:'',
+      algifpass:'',
+      alggrade:'',
       auditVisible:false,
       user:Cookies.get('user')?JSON.parse(Cookies.get('user')):{},
       //表格属性
       tableData: [],
-      strategy: {
+      algorithm: {
         name: '',
         account: '',
         id:'',
@@ -92,8 +92,8 @@ export default {
   computed: {
     highlightedCode() {
       let fileName = "低估价值选股策略.py";
-      if(this.strategy.id<15){
-        fileName = this.strategy.name + ".py";
+      if(this.algorithm.id<4){
+        fileName = this.algorithm.name + ".py";
       }
       // const fileName =  "code.py";
       const filePath = "http://localhost:8080/code/" + fileName; // 使用 public/code 路径
@@ -125,15 +125,15 @@ export default {
   methods: {
     visable(row){
       this.auditVisible=true
-      this.strifpass=row.ifpass
-      this.strategrade=row.strgrade
-      this.strategy = { name: row.strname, account: row.account, id: row.strid};
+      this.algifpass=row.ifpass
+      this.alggrade=row.alggrade
+      this.algorithm = { name: row.algname, account: row.account, id: row.algid};
     },
 
-    //-------------------------------------------获取策略数据------------------------------------
+    //-------------------------------------------获取算法数据------------------------------------
     getData() {
-      var strname=''
-      getUserStrategy({strname}).then(res=>{
+      var algname=''
+      getUserAlgorithm({algname}).then(res=>{
         if(res.code===200){
           console.log(res)
           this.tableData=res.response
@@ -141,7 +141,7 @@ export default {
           // 遍历数据，处理日期属性
           this.tableData.forEach(item => {
             // 将日期字符串转换为 Date 对象
-            let date = new Date(item.strdate);
+            let date = new Date(item.algdate);
 
             // 获取年月日信息
             let year = date.getFullYear();
@@ -149,7 +149,7 @@ export default {
             let day = date.getDate().toString().padStart(2, '0');
 
             // 拼接日期字符串
-            item.strdate = `${year}-${month}-${day}`;
+            item.algdate = `${year}-${month}-${day}`;
           });
 
         }
@@ -163,22 +163,50 @@ export default {
       })
     },
 
-
-    //------------------------------------取消------------------------------
-    cancel(){
-      this.auditVisible=false
-      this.strategrade=''
-      this.ifpass=''
+    //---------------------------------将某只股票添加到收藏夹内----------------------------
+    add(row) {
+      this.$prompt('请输入收藏夹ID', '添加至收藏夹', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputPattern: /^\d+$/,
+        inputErrorMessage: '收藏夹ID必须为数字',
+        inputPlaceholder: '请输入收藏夹ID'
+      }).then(({ value: collectionId }) => {
+        // 检查收藏夹ID是否为空
+        if (!collectionId.trim()) {
+          this.$message.error('收藏夹ID不能为空');
+          // return;
+        }
+        else{
+          this.addToCollection(row.symbol,collectionId);
+        }
+      }).catch(() => {
+        // 用户点击取消后的操作
+        // 可以不做任何处理
+      });
+    },
+    addToCollection(symbol,collectionid) {
+      // 调用后端接口添加至收藏夹
+      addToCollection({symbol,collectionid}).then(res => {
+        console.log(res)
+        if (res.code === 200) {
+          this.$message.success("收藏成功");
+          this.getData(); // 重新加载数据
+        }
+      }).catch(err => {
+        console.log(err);
+        this.$message.error(err.data);
+      });
     },
 
     //------------------------------------下载策略数据---------------------------------------
-    downloadStrategy(row) {
-      console.log('Download:', row);
-      const fileName = row.strname + ".py";
-      // const filePath = "/code/" + fileName; // 注意，这里使用相对路径
+    downloadAlgorithm(row) {
+      console.log('-------------Downloading---------------');
+      console.log(this.algorithm)
+      const fileName = row.algname + ".py";
 
-      let filePath = "http://localhost:8080/code/" + "小市值策略.py"; // 注意，这里使用相对路径
-      if(row.strid<14){
+      let filePath = "http://localhost:8080/code/" + "双均线策略.py"; // 注意，这里使用相对路径
+      if(this.algorithm.id<15){
         filePath = "http://localhost:8080/code/" + fileName; // 注意，这里使用相对路径
       }
       console.log(filePath);
@@ -196,6 +224,32 @@ export default {
       document.body.removeChild(link);
     },
 
+    //------------------------------------确认审核------------------------------
+    checkAlgorithm(){
+      var algid=this.algorithm.id
+      var algname=this.algorithm.name
+      var ifpass= this.algifpass
+      var alggrade=this.alggrade
+
+      checkAlgorithm({algid,ifpass,algname,alggrade}).then(res => {
+        console.log(res)
+        if (res.code === 200) {
+          this.$message.info("审核完成");
+          this.auditVisible=false
+          this.getData(); // 重新加载数据
+        }
+      }).catch(err => {
+        console.log(err);
+        this.$message.error(err.data);
+      });
+    },
+
+    //------------------------------------取消------------------------------
+    cancel(){
+      this.auditVisible=false
+      this.alggrade=''
+      this.ifpass=''
+    }
   }
 };
 </script>

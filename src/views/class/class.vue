@@ -15,7 +15,7 @@
       <div id="newbie" class="cards-row">
         <el-row :gutter="50" >
           <el-col :span="6" v-for="(card, index) in cards1" :key="index">
-            <el-card @click="handleCardClick"  :style="{ marginBottom: index % 4 === 3 ? '30px' : '0', border: '1px solid lightblue'}">
+            <el-card @click.native="handleCardClick(card)" :style="{ marginBottom: index % 4 === 3 ? '30px' : '0', border: '1px solid lightblue'}">
               <div style="padding: 14px; height:75px;">
                 <span>{{ card }}</span>
                 <el-divider></el-divider>
@@ -91,9 +91,10 @@ export default {
       targetPositions: {
         newbie: 100,
         python: 600,
-        strategy: 900,
+        strategy: 930,
         economics: 1200,
       },
+
       cards1: [
         '因子专题：数据获取',
         '因子专题：策略构建',
@@ -134,16 +135,11 @@ export default {
         '经济专题：经济周期',
         '>>查看更多',
       ],
+      cardLinks: {
+        '因子专题：数据获取': 'https://www.joinquant.com/view/community/detail/63c2508b996897cd0bdf2214dee9cde2',
+        '因子专题：策略构建': 'https://www.joinquant.com/view/community/detail/bc98e4553b9684a8212cc2a687113165',
+      },
     };
-  },
-  mounted() {
-    // 在组件挂载完成后获取目标元素位置信息
-    // this.targetPositions = {
-    //   newbie: this.$refs.newbie.getBoundingClientRect().top + window.pageYOffset,
-    //   python: this.$refs.python.getBoundingClientRect().top + window.pageYOffset,
-    //   strategy: this.$refs.strategy.getBoundingClientRect().top + window.pageYOffset,
-    //   economics: this.$refs.economics.getBoundingClientRect().top + window.pageYOffset,
-    // };
   },
   methods: {
     // 点击标签页时，滚动到对应的位置
@@ -152,8 +148,13 @@ export default {
       const top = this.targetPositions[tab.name];
       window.scrollTo({ top: top, behavior: 'smooth' });
     },
-    handleCardClick() {
-      window.location.href = 'https://www.joinquant.com/view/community/detail/63c2508b996897cd0bdf2214dee9cde2';
+    handleCardClick(card) {
+      console.log('Card clicked:', card);
+      if (this.cardLinks.hasOwnProperty(card)) {
+        window.open(this.cardLinks[card], '_blank');
+      } else {
+        console.error('No link found for card:', card);
+      }
     },
   },
 };
@@ -176,20 +177,11 @@ export default {
 
 .el-tabs {
   position: sticky;
-  top: 0px;
+  top: 0;
   z-index: 1;
-  background-color: white
-}
-
-.el-tabs /deep/ .el-tabs__item {
-  margin-left: 20px;
-  font-size: 18px;
-  color: rgb(128, 128, 128);
-}
-
-.el-tabs /deep/ .el-tabs__active-bar {
-  left: 3% !important;
-  width: 94px !important;
+  background-color: white;
+  padding-left: 20px;
 
 }
+
 </style>
