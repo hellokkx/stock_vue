@@ -222,7 +222,10 @@ export default {
         userid:'',
         password:'',
       },
-      emailLog:{},
+      emailLog:{
+        captcha: '',
+        email:''
+      },
       styleObj:{
         bordertoprightradius:'0px',
         borderbottomrightradius: '0px',
@@ -262,7 +265,6 @@ export default {
       // login({ password: md5(this.loginUser.password).substring(8, 24), userAccount: this.loginUser.userAccount }).then(res=>{
       login({ password: this.loginUser.password, userAccount: this.loginUser.userAccount }).then(res=>{
         console.log(res)
-        console.log(res.response)
         if(res.code===200){
           this.loginUser.userAccount=res.response.account
           this.loginUser.userid=res.response.userid
@@ -270,10 +272,9 @@ export default {
           localStorage.setItem("token",res.token)
           // this.onSuccess();
         }
-      }).catch(err=>{
-        //异常处理
-        console.log(err)
-        this.$message.error(err.data)
+        else{
+          this.$message.error(res.msg)
+        }
       })
     },
 
@@ -284,10 +285,9 @@ export default {
         if(res.code===200){
           this.$message.success("验证码发送成功");
         }
-      }).catch(err=>{
-        //异常处理
-        // console.log(err)
-        this.$message.error("验证码发送失败")
+        else{
+          this.$message.error(res.msg)
+        }
       })
     },
 
@@ -306,17 +306,18 @@ export default {
           console.log("res"+res)
           if(res.code===200){
             console.log(res)
-            localStorage.setItem("token",res.data.token)
+            localStorage.setItem("token",res.token)
+            this.loginUser.userAccount=res.response.account
+            this.loginUser.userid=res.response.userid
             //表示把res.data.data.token这个value存储到本地的“token”这个key里面
             // this.onSuccess()
           }
           else{
-            this.$notify.error(res.msg)
+            this.$message.error(res.msg)
           }
         }).catch(err=>{
           //异常处理
           console.log(err)
-          this.$message.error("邮箱未注册")
         })
       }
 
@@ -327,6 +328,7 @@ export default {
       this.$message.success("登录成功")
       if(this.loginUser!==null){
         Cookies.set('user',JSON.stringify(this.loginUser))
+        console.log(JSON.stringify(this.loginUser))
       }
       this.$router.push('/home')
     },

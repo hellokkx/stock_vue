@@ -43,7 +43,7 @@
 <!--            <span>首页</span>-->
 <!--          </el-menu-item>-->
 
-          <el-submenu index="1">
+          <el-submenu index="1" v-if="authority === 'StrE'||authority === 'Root'">
             <template slot="title">
               <i class="el-icon-location"></i>
               <span>策略处理</span>
@@ -58,22 +58,23 @@
             </el-menu-item>
           </el-submenu>
 
-          <el-submenu index="2">
+          <el-submenu index="2" v-if="authority === 'AlgE'||authority === 'Root'">
             <template slot="title">
               <i class="el-icon-location"></i>
               <span>算法处理</span>
             </template>
             <el-menu-item index="/admin/checkAlgorithm">
-              <!--              <i class="el-icon-user"></i>-->
+              <!-- <i class="el-icon-user"></i> -->
               <span>算法审核</span>
             </el-menu-item>
             <el-menu-item index="/admin/Algorithm">
-              <!--              <i class="el-icon-user"></i>-->
+              <!-- <i class="el-icon-user"></i> -->
               <span>算法管理</span>
             </el-menu-item>
           </el-submenu>
 
-          <el-menu-item index="/admin/User">
+
+          <el-menu-item index="/admin/User" v-if="authority === 'Root'">
             <i class="el-icon-user"></i>
             <span>用户管理</span>
           </el-menu-item>
@@ -106,7 +107,8 @@ export default {
   name: "Layout",
   data(){
     return{
-      user:Cookies.get('user') ? JSON.parse(Cookies.get('user')):{}
+      user:Cookies.get('user') ? JSON.parse(Cookies.get('user')):{},
+      authority: localStorage.getItem("authority")
     }
   },
   methods:{

@@ -30,12 +30,12 @@
                      @click.stop="copyStockCode"
           ></el-button>
         </el-descriptions-item>
-        <el-descriptions-item label="换手率">{{ selectedStock.turnoverRate }}</el-descriptions-item>
-        <el-descriptions-item label="市盈率">{{ selectedStock.peRatio }}</el-descriptions-item>
-        <el-descriptions-item label="成交量">{{ selectedStock.volume }}</el-descriptions-item>
-        <el-descriptions-item label="总市值">{{ selectedStock.marketCap }}</el-descriptions-item>
-        <el-descriptions-item label="成交额">{{ selectedStock.turnover }}</el-descriptions-item>
-        <el-descriptions-item label="总股本">{{ selectedStock.totalShares }}</el-descriptions-item>
+<!--        <el-descriptions-item label="换手率">{{ selectedStock.turnoverRate }}</el-descriptions-item>-->
+<!--        <el-descriptions-item label="市盈率">{{ selectedStock.peRatio }}</el-descriptions-item>-->
+<!--        <el-descriptions-item label="成交量">{{ selectedStock.volume }}</el-descriptions-item>-->
+<!--        <el-descriptions-item label="总市值">{{ selectedStock.marketCap }}</el-descriptions-item>-->
+<!--        <el-descriptions-item label="成交额">{{ selectedStock.turnover }}</el-descriptions-item>-->
+<!--        <el-descriptions-item label="总股本">{{ selectedStock.totalShares }}</el-descriptions-item>-->
       </el-descriptions>
       <!-- 股票公告栏 -->
       <div class="announcements-container">

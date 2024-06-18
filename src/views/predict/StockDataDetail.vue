@@ -9,7 +9,7 @@
           <div class="input-group">
             <h3>查询股票</h3>
             <el-input v-model="symbol" placeholder="请输入代码" style="width: 350px;margin-right: 20px;"></el-input>
-            <el-button type="primary" @click="showBasicInfo">基本情况</el-button>
+            <el-button type="primary" @click="showBasicInfo">查询</el-button>
           </div>
         </div>
 

@@ -3,15 +3,15 @@
   <div class="c1" style="height: 100vh;overflow: hidden;position: relative">
 
     <div style="width: 400px;height: 400px;background-color:white;
-    border-radius:10px;margin:150px auto; margin-left:650px; padding: 40px 40px">
+    border-radius:10px;margin:150px auto; margin-left:50px; padding: 40px 40px">
       <div style="margin-top: 30px; margin-bottom:35px; text-align: center;
       font-size: 25px;font-weight: bold;color: #0e74d3">
-        欢迎登录
+        管理员登录
       </div>
 
       <el-form :model="admin" ref="loginForm">
         <el-form-item prop="username">
-          <el-input placeholder="请输入账号" prefix-icon="el-icon-user" size="medium" v-model="admin.authority"></el-input>
+          <el-input placeholder="请输入账号" prefix-icon="el-icon-user" size="medium" v-model="admin.account"></el-input>
         </el-form-item>
 
         <el-form-item prop="password">
@@ -30,7 +30,7 @@
 <script>
 import request from "@/utils/request";
 import Cookies from 'js-cookie';
-import {adminlogin,login, getCaptcha} from "@/api";
+import {getUserRole,login, getCaptcha} from "@/api";
 
 export default {
   name: "Login",
@@ -42,29 +42,36 @@ export default {
   methods:{
     //管理员登录
     adminlogin(){
-      // adminlogin({authority:this.admin.authority,username:this.admin.username}).then(res=>{
-      //   console.log(res)
-      //   if(res.code===200){
-      //     localStorage.setItem("token",res.token)
-      //     this.$message.success("登录成功");
-      //     this.$router.push("/")
-      //   }
-      // }).catch(err=>{
-      //   //异常处理
-      //   // console.log(err)
-      //   this.$message.error("登录失败")
-      // })
-      // }
+      login({password: this.admin.username, userAccount: this.admin.account}).then(res => {
+        console.log(res);
+        if (res.code === 200) {
+          localStorage.setItem("token", res.token);
+          console.log(res.token)
+          console.log(localStorage.getItem("token"))
 
+          getUserRole().then(res => {
+            //获取当前用户权限等级
+            const authority=res.response
+            localStorage.setItem("authority",authority)
 
-      login({password:this.admin.username,userAccount:this.admin.authority}).then(res=>{
-        console.log(res)
-        if(res.code===200){
-          localStorage.setItem("token",res.token)
-          this.$message.success("登录成功")
-          this.$router.push("/admin")
+            if(authority==='User'||authority==='Vip'){
+              this.$message.warning("当前用户权限不足！")
+              this.admin.username=''
+              this.admin.account=''
+            }
+            else{
+              this.$message.success(authority+"登录成功");
+              this.admin.username=''
+              this.admin.account=''
+              this.$router.push("/admin")
+            }
+          });
         }
-      })
+        else{
+          this.$message.error(res.msg)
+        }
+      });
+
 
     },
   }
@@ -74,7 +81,7 @@ export default {
 <style scoped>
 
 .c1{
-  /*background-image: url("bgc.jpg");*/
+  background-image: url("@/views/login/images/background1.png");
   background-color: black;
   /* 背景图垂直、水平均居中 */
   background-position: center center;

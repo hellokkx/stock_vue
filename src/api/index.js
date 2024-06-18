@@ -89,6 +89,9 @@ export const updatePassword=({userId,oldPassword,newPassword})=>post('/user/upda
 
 //更新密码
 export const updateUser=({userId,nickname,address,birthday,email,sex,signal})=>post('user/updateUser',{userId,nickname,address,birthday,email,sex,signal})
+
+//判断用户权限
+export const getUserRole=()=>get('user/log/getUserRole')
 //-----------------------策略数据相关------------------
 
 //管理员查看策略

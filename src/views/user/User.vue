@@ -30,7 +30,7 @@
 <!--        <el-table-column type="selection" width="55" align="center"></el-table-column>-->
         <el-table-column prop="userid" label="用户id" width="70" align="center"></el-table-column>
         <el-table-column prop="account" label="账号" align="center"></el-table-column>
-        <el-table-column prop="ifbanned" label="权限等级" align="center"></el-table-column>
+        <el-table-column prop="ifbanned" label="是否封禁" align="center"></el-table-column>
         <!--        <el-table-column prop="symbol" label="全球唯一标识符" align="center"></el-table-column>-->
         <el-table-column prop="nickname" label="昵称" width="150" align="center"></el-table-column>
         <el-table-column prop="sex" label="性别" align="center"></el-table-column>
@@ -148,7 +148,8 @@ export default {
 
     //------------------------------删除用户数据-------------------------------
     del(id) {
-      deleteUser({ id }).then(res => {
+      var userId= id
+      deleteUser({ userId }).then(res => {
         if (res.code === 200) {
           this.$message.success("删除成功")
           this.getData();

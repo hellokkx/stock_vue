@@ -312,7 +312,8 @@ export default {
 .home-view {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  /*width: 100%;*/
+  width: 1000px;
   /*max-width: 1000px;*/
   padding: 0px;
   margin-right: 10px;

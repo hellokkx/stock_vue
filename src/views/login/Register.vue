@@ -124,7 +124,7 @@ export default {
             this.$router.push("/login")
           }
           else{
-            this.$notify.error(res.msg)
+            this.$message.error(res.msg)
           }
         }).catch(err=>{
           //异常处理

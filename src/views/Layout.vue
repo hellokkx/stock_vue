@@ -59,7 +59,7 @@
               <span>股票信息</span>
             </template>
             <el-menu-item index="/stockList">所有股票</el-menu-item>
-            <el-menu-item index="/starList">收藏夹</el-menu-item>
+            <el-menu-item index="/starList">我的收藏</el-menu-item>
           </el-submenu>
 
           <el-submenu index="2">
@@ -122,6 +122,7 @@ export default {
     logout(){
       //清除浏览器用户数据
       Cookies.remove('user')
+      localStorage.removeItem("token")
       this.$router.push('/login')
     },
     jumptoPerson() {
