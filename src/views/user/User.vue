@@ -5,8 +5,7 @@
       <!--搜索表单-->
       <div style="margin-bottom: 20px">
         <el-input style="width: 200px" placeholder="请输入id" v-model="input.id"></el-input>
-        <el-input style="width: 200px;margin-left: 10px" placeholder="请输入用户名" v-model="input.useraccount"></el-input>
-<!--        <el-input style="width: 240px" placeholder="请输入id"></el-input>-->
+        <el-input style="width: 200px;margin-left: 10px" placeholder="请输入账号" v-model="input.useraccount"></el-input>
         <el-button style="margin-left: 5px" type="info" plain @click="getDataByid">
           <i class=" el-icon-search"></i>
           <span>搜索</span>
@@ -62,7 +61,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import {deleteUser, getUserList,getUserById,getUserByAccount} from "@/api";
 
 export default {
@@ -88,191 +86,79 @@ export default {
   },
 
   methods: {
-    //重置
+    //------------------------------------------重置------------------------------------------
     reset(){  //重置
       this.input.id=''
       this.input.useraccount=''
       this.getData()
     },
-    //获取用户数据
+    //------------------------------------------获取用户数据--------------------------------------
     getData() {
-      getUserList().then(res=>{
-        console.log("res"+res)
-        if(res.code===200){
-          console.log(res)
-          this.tableData=res.response
-          // this.$message.success("查询成功")
-          // 遍历数据，处理日期属性
-          this.tableData.forEach(item => {
-            // 将日期字符串转换为 Date 对象
-            let birthday = new Date(item.birthday);
-
-            // 获取年月日信息
-            let year = birthday.getFullYear();
-            let month = (birthday.getMonth() + 1).toString().padStart(2, '0'); // 月份从0开始，需要加1
-            let day = birthday.getDate().toString().padStart(2, '0');
-
-            // 拼接日期字符串
-            item.birthday = `${year}-${month}-${day}`;
-          });
-
-        }
-        else{
+      getUserList().then(res => {
+        if (res.code === 200) {
+          this.tableData = this.formatData(res.response);
+        } else {
           this.$message.error(res.msg)
         }
-      }).catch(err=>{
-        //异常处理
-        console.log(err)
+      }).catch(err => {
         this.$message.error(err.data)
       })
     },
 
-
-    //根据id获取用户数据
+    //------------------------------------------根据id获取用户数据--------------------------------------
     getDataByid() {
-      console.log("gettokken"+this.token)
-      if(this.input.id!==''){
-        getUserById({userId:this.input.id}).then(res=>{
-          console.log("res"+res)
-          if(res.code===200){
-            console.log(res)
-            const responseData = {
-              userid: res.response.userid,
-              account: res.response.account,
-              birthday:res.response.birthday,
-              email:res.response.email,
-              ifbanned:res.response.ifbanned,
-              nickname:res.response.nickname,
-              sex:res.response.sex,
-              signal:res.response.signal,
-              address:res.response.address
-              // 其他属性...
-            };
-
-            const dataList = [responseData];
-            console.log(dataList)
-
-            this.tableData=dataList
-
-            // 遍历数据，处理日期属性
-            this.tableData.forEach(item => {
-              // 将日期字符串转换为 Date 对象
-              let birthday = new Date(item.birthday);
-
-              // 获取年月日信息
-              let year = birthday.getFullYear();
-              let month = (birthday.getMonth() + 1).toString().padStart(2, '0'); // 月份从0开始，需要加1
-              let day = birthday.getDate().toString().padStart(2, '0');
-
-              // 拼接日期字符串
-              item.birthday = `${year}-${month}-${day}`;
-            });
-
-          }
-          else{
+      if (this.input.id !== '') {
+        getUserById({ userId: this.input.id }).then(res => {
+          if (res.code === 200) {
+            this.tableData = this.formatData([res.response]);
+          } else {
             this.$message.error(res.msg)
           }
-        }).catch(err=>{
-          //异常处理
-          console.log(err)
+        }).catch(err => {
           this.$message.error(err.data)
         })
-      }
-      else if(this.input.account!==''){
-        getUserByAccount({userAccount:this.input.useraccount}).then(res=>{
-          console.log("res"+res)
-          if(res.code===200){
-            console.log(res)
-            const responseData = {
-              userid: res.response.userid,
-              account: res.response.account,
-              birthday:res.response.birthday,
-              email:res.response.email,
-              ifbanned:res.response.ifbanned,
-              nickname:res.response.nickname,
-              sex:res.response.sex,
-              signal:res.response.signal,
-              address:res.response.address
-              // 其他属性...
-            };
-
-            const dataList = [responseData];
-            console.log(dataList)
-
-            this.tableData=dataList
-
-            // 遍历数据，处理日期属性
-            this.tableData.forEach(item => {
-              // 将日期字符串转换为 Date 对象
-              let birthday = new Date(item.birthday);
-
-              // 获取年月日信息
-              let year = birthday.getFullYear();
-              let month = (birthday.getMonth() + 1).toString().padStart(2, '0'); // 月份从0开始，需要加1
-              let day = birthday.getDate().toString().padStart(2, '0');
-
-              // 拼接日期字符串
-              item.birthday = `${year}-${month}-${day}`;
-            });
-
-          }
-          else{
+      } else if (this.input.useraccount !== '') {
+        getUserByAccount({ userAccount: this.input.useraccount }).then(res => {
+          if (res.code === 200) {
+            this.tableData = this.formatData([res.response]);
+          } else {
             this.$message.error(res.msg)
           }
-        }).catch(err=>{
-          //异常处理
-          console.log(err)
+        }).catch(err => {
           this.$message.error(err.data)
         })
-      }
-      else{
+      } else {
         this.$message.info("当前查询内容为空")
       }
     },
 
-    //删除用户数据
-    del(id){
-      console.log(id)
+    //-----------------------------------处理日期数据----------------------------------------
+    formatData(data) {
+      return data.map(item => {
+        let birthday = new Date(item.birthday);
+        let year = birthday.getFullYear();
+        let month = (birthday.getMonth() + 1).toString().padStart(2, '0');
+        let day = birthday.getDate().toString().padStart(2, '0');
+        return {
+          ...item,
+          birthday: `${year}-${month}-${day}`
+        };
+      });
+    },
 
-      deleteUser({id}).then(res=>{
-        if(res.code===200){
-          console.log(res)
+    //------------------------------删除用户数据-------------------------------
+    del(id) {
+      deleteUser({ id }).then(res => {
+        if (res.code === 200) {
           this.$message.success("删除成功")
-
-
-          // 遍历数据，处理日期属性
-          this.tableData.forEach(item => {
-            // 将日期字符串转换为 Date 对象
-            let birthday = new Date(item.birthday);
-
-            // 获取年月日信息
-            let year = birthday.getFullYear();
-            let month = (birthday.getMonth() + 1).toString().padStart(2, '0'); // 月份从0开始，需要加1
-            let day = birthday.getDate().toString().padStart(2, '0');
-
-            // 拼接日期字符串
-            item.birthday = `${year}-${month}-${day}`;
-          });
-
+          this.getData();
         }
-      }).catch(err=>{
-        //异常处理
-        console.log(err)
+      }).catch(err => {
         this.$message.error(err.data)
       })
-
     },
 
-    addStockList(){
-
-    },
-    deleteStockList(){
-
-    },
-    // 多选操作
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
-    },
+    //--------------------------------分页----------------------------
     handlePageChange(val) {
       this.$set(this.query, 'pageIndex', val);
       this.getData();

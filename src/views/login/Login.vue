@@ -4,6 +4,7 @@
 
 <!--    验证码模块-->
 <!--    <el-card class="cover" v-if="loginUser.userid">-->
+    <el-card class="cover" v-if="loginUser.userid">
 
 <!--      <slide-verify :l="42"-->
 <!--                    :r="10"-->
@@ -15,11 +16,10 @@
 <!--                    @fail="onFail"-->
 <!--                    @refresh="onRefresh"-->
 <!--      ></slide-verify>-->
+      <Verify @success="onSuccess" @error="onFail" :type="1" :height="2"></Verify>
+    </el-card>
 
-<!--    </el-card>-->
-
-
-    <!-- 登录界面 -->
+          <!-- 登录界面 -->
     <div class="loginAndRegist">
       <!--普通登录表单-->
       <div  class="loginArea">
@@ -207,6 +207,8 @@ import {login, register, getCaptcha, emailLogin} from "@/api/index";
 import request from "@/api/request"
 import "@/assets/css/button.css"
 import md5 from 'js-md5'
+import Verify from 'vue2-verify'
+
 
 export default {
 
@@ -266,7 +268,7 @@ export default {
           this.loginUser.userid=res.response.userid
           //表示把token存储到本地的“token”这个key里面
           localStorage.setItem("token",res.token)
-          this.onSuccess();
+          // this.onSuccess();
         }
       }).catch(err=>{
         //异常处理
@@ -306,7 +308,7 @@ export default {
             console.log(res)
             localStorage.setItem("token",res.data.token)
             //表示把res.data.data.token这个value存储到本地的“token”这个key里面
-            this.onSuccess()
+            // this.onSuccess()
           }
           else{
             this.$notify.error(res.msg)
@@ -329,6 +331,7 @@ export default {
       this.$router.push('/home')
     },
     onFail(){
+      this.$message.warning("验证码错误,请重试")
       this.msg = ''
     },
     onRefresh(){
@@ -355,6 +358,9 @@ export default {
     }
 
   },
+  components: {
+    Verify
+  }
 
 }
 </script>
@@ -518,7 +524,9 @@ export default {
 }
 
 .cover{
+  padding: 15px;
   width: fit-content;
+  height: 32%;
   background-color: white;
   position: absolute;
   top: 50%;

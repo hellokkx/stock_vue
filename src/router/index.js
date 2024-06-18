@@ -9,27 +9,11 @@ Vue.use(VueRouter)
 
 const routes = [
     //----------------------1_Login-------------------------------
-  {
-    path: '/login',
-    name: 'Login',
-    component: ()=>import('@/views/login/Login.vue'),
-  },
-  {
-    path: '/adminlogin',
-    name: 'AdminLogin',
-    component: ()=>import('@/views/admin/AdminLogin.vue'),
-  },
-  {
-    path: '/register',
-    name: 'Register',
-    component: ()=>import('@/views/login/Register.vue'),
-  },
+  {path: '/login', name: 'Login', component: ()=>import('@/views/login/Login.vue'),},
+  {path: '/adminlogin', name: 'AdminLogin', component: ()=>import('@/views/admin/AdminLogin.vue'),},
+  {path: '/register', name: 'Register', component: ()=>import('@/views/login/Register.vue'),},
     //------------------------1_UserLayout-------------------------
-  {
-    path: '/',
-    name: 'Layout',
-    component: Layout,
-    redirect:'/home',
+  {path: '/', name: 'Layout', component: Layout, redirect:'/home',
     children:[
       //------------------------2_HOME-------------------------
       {path: 'home', name: 'Home', component: HomeView},
@@ -56,6 +40,9 @@ const routes = [
       {path: 'stockDetail', name: 'stockDetail', component: () => import('@/views/predict/StockDataDetail.vue')},
       {path: 'predictStock', name: 'predictStock', component: () => import('@/views/predict/PredictStock.vue')},
       {path: 'algorithm', name: 'algorithm', component: () => import('@/views/algorithm/userAlgorithm.vue')},
+
+      //---------------------2_Predict--------------------------
+      {path: 'personal-center',name: 'PersonalCenter',component: () => import('@/views/user/PersonalCenter.vue')},
     ]
   },
   {
@@ -63,15 +50,8 @@ const routes = [
     component:()=>import('@/views/404.vue')
   },
 
-
-
     //--------------------------1-Admin-------------------------
-  {
-    path: '/admin',
-    name: 'Admin',
-    component: ()=>import('@/views/admin/AdminLayout.vue'),
-    redirect:'/admin/adminhome',
-
+  {path: '/admin', name: 'Admin', component: ()=>import('@/views/admin/AdminLayout.vue'), redirect:'/admin/adminhome',
     children:[
       //------------------------2_HOME-------------------------
       {path: 'adminhome', name: 'Home', component: ()  => import('@/views/admin/AdminHome.vue')},
@@ -88,12 +68,10 @@ const routes = [
       //---------------------2_SelfStock--------------------------
       {path: 'selfSelectStock', name: 'SelfStock', component: () => import('@/views/selfStock/SelfSelectStock.vue')},
       {path: 'selfSelectStock2', name: 'SelfStock', component: () => import('@/views/selfStock/SelfSelectStock.vue')},
-
-
     ]
   },
     //-------------------------1_UserProfile---------------------------
-  {path: '/UserProfile', name: 'AccountSettingModal', component: ()=>import('@/views/userProfile/PersonalCenter.vue')},
+  {path: '/UserProfile', name: 'AccountSettingModal', component: ()=>import('@/views/user/PersonalCenter.vue')},
 
 ]
 

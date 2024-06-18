@@ -19,12 +19,13 @@
         >
 
           <el-table-column prop="strid" label="id" width="55" align="center"></el-table-column>
-          <el-table-column prop="strname" label="策略名" width="185"align="center"></el-table-column>
+          <el-table-column prop="strname" label="策略名" align="center"></el-table-column>
           <el-table-column prop="account" label="上传者账号" align="center"></el-table-column>
           <!--        <el-table-column prop="symbol" label="全球唯一标识符" align="center"></el-table-column>-->
 <!--          <el-table-column prop="ifpass" label="是否在策略池中" align="center"></el-table-column>-->
           <el-table-column prop="strdate" label="上传日期" align="center"></el-table-column>
           <el-table-column prop="strgrade" label="策略等级" align="center"></el-table-column>
+          <el-table-column prop="introduction" label="策略简介" align="center"></el-table-column>
 
           <el-table-column label="精选策略" width="150" align="center">
             <template v-slot="scope">

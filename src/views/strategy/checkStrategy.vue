@@ -25,6 +25,7 @@
           <el-table-column prop="ifpass" label="是否在策略池中" align="center"></el-table-column>
           <el-table-column prop="strdate" label="上传日期" align="center"></el-table-column>
           <el-table-column prop="strgrade" label="策略等级" align="center"></el-table-column>
+          <el-table-column prop="introduction" label="策略简介" align="center"></el-table-column>
 
           <el-table-column label="策略审核" align="center">
             <template v-slot="scope">

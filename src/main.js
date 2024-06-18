@@ -5,14 +5,12 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import '@/assets/global.css'
 import SlideVerify from 'vue-monoplasty-slide-verify';
-
-
-
+import Verify from 'vue2-verify'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI,{size:'small'});
 Vue.use(SlideVerify);
-
+Vue.use(Verify)
 
 
 new Vue({

@@ -37,8 +37,13 @@ export const updateCollection=({collectionid,collectionname})=>post('/user/chang
 //--------------------股票数据相关--------------------
 
 //获取股票数据
-// export const getStocklist =()=>get('/stockList')
 export const getStocklist =()=>get('/StockData/getAllStock')
+
+//根据姓名获取股票数据
+export const getStockByName=({name})=>get('/StockData/getStockByName',{name})
+
+//根据代码获取股票数据
+export const getStockBySymbol=({symbol})=>get('/StockData/getStockBySymbol',{symbol})
 
 //将某只股票添加到收藏夹内
 export const addToCollection =({symbol,collectionid})=>post('/user/addStockToCollection',{symbol,collectionid})
@@ -69,9 +74,13 @@ export const getUserById = ({userId})=>get('/user/getUserById',{userId})
 export const getUserByAccount = ({userAccount})=>get('/user/getUserByAccount',{userAccount})
 
 //删除用户数据
-export const deleteUser = ({id})=>get('/delete',{id})
+export const deleteUser = ({userId})=>post('/user/deleteUser',{userId})
 
+//更新密码
+export const updatePassword=({userId,oldPassword,newPassword})=>post('/user/updatePassword',{userId,oldPassword,newPassword})
 
+//更新密码
+export const updateUser=({userId,nickname,address,birthday,email,sex,signal})=>post('user/updateUser',{userId,nickname,address,birthday,email,sex,signal})
 //-----------------------策略数据相关------------------
 
 //管理员查看策略

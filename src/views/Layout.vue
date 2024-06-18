@@ -131,8 +131,13 @@ export default {
       Cookies.remove('user')
       this.$router.push('/login')
     },
-    jumptoPerson(){
-      this.$router.push('/login')
+    jumptoPerson() {
+      const currentRoute = this.$route.path;
+      const targetRoute = '/personal-center';
+
+      if (currentRoute !== targetRoute) {
+        this.$router.push(targetRoute);
+      }
     },
 
   }
