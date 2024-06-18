@@ -15,7 +15,6 @@
     </div>
 
     <div class="container">
-
 <!--      表格-->
       <el-table
           :data="paginatedData"
@@ -51,13 +50,30 @@
           style="margin-top: 20px;margin-left: 20px"
       ></el-pagination>
     </div>
+
+    <!-- 收藏夹选择 Dialog -->
+    <el-dialog :visible.sync="dialogVisible" title="添加至收藏夹" width="400px">
+      <el-select v-model="selectedCollectionId" placeholder="请选择收藏夹" size="medium" style="width: 300px;margin-left: 30px">
+        <el-option
+            v-for="item in collectionOptions"
+            :key="item.collectionid"
+            :label="item.collectionname"
+            :value="item.collectionid">
+        </el-option>
+      </el-select>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="cancel">取消</el-button>
+        <el-button type="primary" @click="submitCollection">确定</el-button>
+      </span>
+    </el-dialog>
+
   </div>
 </template>
 
 
 <script>
 import axios from 'axios'
-import {addToCollection, getStocklist, getStockByName,getStockBySymbol} from "@/api";
+import {addToCollection, getStocklist, getStockByName,getStockBySymbol,getCollection} from "@/api";
 import Cookies from "js-cookie";
 
 export default {
@@ -72,7 +88,14 @@ export default {
       input: {
         name:'',
         symbol:''
-      }
+      },
+      dialogVisible: false,
+      selectedCollectionId: '',
+      collectionOptions: [
+        { collectionid: '1', collectionname: '收藏夹1' },
+        { collectionid: '3', collectionname: '收藏夹3' },
+        // 添加更多选项
+      ]
     };
   },
   computed: {
@@ -106,36 +129,52 @@ export default {
 
     //----------------------------------- 将某只股票添加到收藏夹内------------------------------------
     add(row) {
-      this.$prompt('请输入收藏夹ID', '添加至收藏夹', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        inputPattern: /^\d+$/,
-        inputErrorMessage: '收藏夹ID必须为数字',
-        inputPlaceholder: '请输入收藏夹ID'
-      }).then(({ value: collectionId }) => {
-        // 检查收藏夹ID是否为空
-        if (!collectionId.trim()) {
-          this.$message.error('收藏夹ID不能为空');
+      this.selectedRow = row;
+      this.dialogVisible = true;
+
+      /* 获取收藏夹名称 */
+      var userid=this.user.userid
+      var collectionname=''
+      getCollection({userid,collectionname}).then(res => {
+        if (res.code === 200) {
+          this.collectionOptions = res.response
         } else {
-          this.addToCollection(row.symbol, collectionId);
+          this.$message.error(res.msg)
         }
-      }).catch(() => {
-        // 用户点击取消后的操作
-        // 可以不做任何处理
-      });
+      }).catch(err => {
+        // 异常处理
+        console.log(err)
+        this.$message.error(err.data)
+      })
+
+    },
+    submitCollection() {
+      if (!this.selectedCollectionId) {
+        this.$message.error('请选择一个收藏夹');
+        return;
+      }
+      this.addToCollection(this.selectedRow.symbol, this.selectedCollectionId);
+      this.dialogVisible = false;
+      this.selectedCollectionId=''
     },
     addToCollection(symbol, collectionid) {
       // 调用后端接口添加至收藏夹
       addToCollection({ symbol, collectionid }).then(res => {
-        console.log(res)
         if (res.code === 200) {
           this.$message.success("收藏成功");
           this.getData(); // 重新加载数据
+        } else {
+          this.$message.error(res.msg);
         }
       }).catch(err => {
         console.log(err);
         this.$message.error(err.data);
       });
+    },
+
+    cancel(){
+      this.dialogVisible = false
+      this.selectedCollectionId=''
     },
 
     //---------------------------------------分页处理-------------------------------------------------

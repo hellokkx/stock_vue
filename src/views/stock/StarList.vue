@@ -1,10 +1,10 @@
 <template>
 
-  <div style="margin-top: 10px;margin-right: 20px;margin-left:10px">
+  <div style="margin-top: 20px;margin-right: 20px;margin-left:40px">
     <!--搜索表单-->
     <div style="margin-bottom: 20px">
-      <el-input style="width: 240px" placeholder="请输入收藏夹名称" v-model="params.sname"></el-input>
-      <el-button style="margin-left: 5px" type="info" plain @click="load">
+      <el-input style="width: 240px" placeholder="请输入收藏夹名称" v-model="sname"></el-input>
+      <el-button style="margin-left: 5px" type="info" plain @click="search">
         <i class=" el-icon-search"></i>
         <span>搜索</span>
       </el-button>
@@ -14,7 +14,7 @@
       </el-button>
     </div>
 
-    <div class="add" style="margin-bottom: 10px">
+    <div class="add" style="margin-bottom: 10px;margin-top: 15px">
       <el-button type="primary" @click="addStarList">添加收藏夹</el-button>
     </div>
 
@@ -27,35 +27,35 @@
     </el-dialog>
 
     <div class="table">
-      <el-table :data="tableData" stripe row-key="oid" border default-expand-all>
-<!--        <el-table-column prop="userid" label="用户id"></el-table-column>-->
-        <el-table-column prop="collectionid" label="收藏id" width="100"></el-table-column>
-<!--        <el-table-column prop="symbol" label="收藏股票代码"></el-table-column>-->
-        <el-table-column prop="collectionname" label="收藏股票名称" width="178"></el-table-column>
-        <!--      <el-table-column prop="detail" label="详情"></el-table-column>-->
+      <el-table :data="paginatedData" stripe row-key="oid" border default-expand-all
+                :header-cell-style="{ textAlign: 'center' }" :cell-style="{ textAlign: 'center' }">
+        <el-table-column prop="collectionid" label="收藏id" width="75"></el-table-column>
+        <el-table-column prop="collectionname" label="收藏股票名称"></el-table-column>
 
-        <el-table-column label="操作" align="left" header-align="50px" width="350">
+        <el-table-column label="操作" align="center" header-align="center" width="350">
           <template v-slot="scope">
             <el-button type="success" plain @click="$router.push('/detail?collectionid='+scope.row.collectionid+'&collectionname='+scope.row.collectionname)">查看详情</el-button>
             <el-button type="primary" plain @click="modify(scope.row)">修改名称</el-button>
             <el-button type="danger" plain @click="del(scope.row.collectionid)">删除</el-button>
           </template>
         </el-table-column>
-
       </el-table>
+
     </div>
 
 
-<!--    <div style="margin-top: 20px">-->
-<!--      <el-pagination-->
-<!--          background-->
-<!--          :current_page="params.pageNum"-->
-<!--          :page-size="params.pageSize"-->
-<!--          layout="prev, pager, next"-->
-<!--          @current-change="handleCurrentChange"-->
-<!--          :total="total">-->
-<!--      </el-pagination>-->
-<!--    </div>-->
+    <div style="margin-top: 20px">
+      <!--      分页处理-->
+      <el-pagination
+          background
+          layout="total, prev, pager, next"
+          :page-size="pageSize"
+          :current-page.sync="currentPage"
+          :total="tableData.length"
+          @current-change="handlePageChange"
+          style="margin-top: 20px;margin-left: 20px"
+      ></el-pagination>
+    </div>
 
 
   </div>
@@ -75,33 +75,49 @@ export default {
       tableData:[],
       total:0,
       params:{
-        pageNum:1,
-        pageSize:10,
         userId:"2",
         name:Cookies.get('user') ? JSON.parse(Cookies.get('user')).username:{},
       },
+      sname:'',
       dialogVisible: false, // 控制对话框显示隐藏
       collectionName: '',   // 收藏夹名称
+      currentPage: 1,  // 当前页
+      pageSize: 7,    // 每页显示的行数
 
     }
   },
   created() {
     this.token =  localStorage.getItem('token')
+    this.user = Cookies.get('user')?JSON.parse(Cookies.get('user')):{}
     this.load()
   },
+
+  computed: {
+    paginatedData() {
+      const start = (this.currentPage - 1) * this.pageSize;
+      const end = start + this.pageSize;
+      return this.tableData.slice(start, end);
+    },
+  },
+
   methods: {
     load(){
       this.getCollection()
     },
+
+    //---------------------------------------分页处理-------------------------------------------------
+    handlePageChange(val) {
+      this.currentPage = val;
+    },
+
+    //-----------------------------------获取股票收藏夹数据-------------------------------------------
     getCollection(){
-      console.log("here is userid"+this.user.userid)
       var userid=this.user.userid
       var collectionname=''
       getCollection({userid,collectionname}).then(res=>{
         console.log(res)
         if(res.code===200){
           this.tableData=res.response
-          // this.$message.success("查询成功");
         }
       }).catch(err=>{
         //异常处理
@@ -109,7 +125,25 @@ export default {
         this.$message.error(err.data)
       })
     },
-    reset(){  //重置
+
+    //-----------------------------------根据名称搜索收藏夹数据-------------------------------------------
+    search(){
+      var userid=this.user.userid
+      var collectionname=this.sname
+      getCollection({userid,collectionname}).then(res=>{
+        console.log(res)
+        if(res.code===200){
+          this.tableData=res.response
+        }
+      }).catch(err=>{
+        //异常处理
+        console.log(err)
+        this.$message.error(err.data)
+      })
+    },
+
+    //-----------------------------------重置-------------------------------------------
+    reset(){
       this.params={
         pageNum:1,
         pageSize:10,
@@ -117,7 +151,7 @@ export default {
       this.load()
     },
 
-    //用户删除收藏夹
+    //-----------------------------------用户删除收藏夹-------------------------------------------
     del(collectionid){
       console.log("collectionid"+collectionid)
       deleteCollection({collectionid}).then(res=>{
@@ -133,7 +167,7 @@ export default {
       })
     },
 
-    //用户新增收藏夹
+    //-------------------------------------用户新增收藏夹-------------------------------------
     addStarList() {
       this.dialogVisible = true; // 点击按钮时显示对话框
     },
@@ -163,7 +197,7 @@ export default {
       this.collectionName=''
     },
 
-    //修改收藏夹名称
+    //-------------------------------------修改收藏夹名称-------------------------------------
     modify(row) {
       // 弹出对话框让用户输入新的收藏夹名字
       this.$prompt('请输入新的收藏夹名字', '修改收藏夹名字', {
@@ -181,6 +215,7 @@ export default {
         // 可以不做任何处理
       });
     },
+
     updateCollectionName(collectionid, collectionname) {
       // 调用后端接口修改收藏夹名字
       updateCollection({ collectionid, collectionname }).then(res => {
@@ -208,6 +243,7 @@ export default {
 <style scoped>
 
 .table{
+  margin-top:20px;
   width: 60%;
 }
 </style>

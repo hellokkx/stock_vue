@@ -63,6 +63,14 @@ export const getTopList =()=>get('/StockData/getTopList')
 //获取大盘热点新闻
 export const getMajorNews =()=>get('/StockData/getMajorNews')
 
+//用户查询某收藏夹里全部股票
+export const getCollectionStock = ({collectionid})=>post('/user/selectStockFromCollection',{collectionid})
+
+//获取某只股票的近期公告
+export const getStockAnnouncement =({symbol})=>get('/StockData/getStockNews',{symbol})
+
+//获取大盘行情
+export const getMarketData =({id})=>post('PythonConnection/GetMarketIndex',{id})
 //--------------------用户数据相关--------------------
 //获取用户数据
 export const getUserList = ()=>get('/user/getAllUser')

@@ -16,6 +16,7 @@
         <!-- 第二个部分 -->
         <div class="section section2">
           <div v-if="showLine" id="chart-container" style="height: 350px;"></div>
+          <div v-if="showKLine" id="chart-container2" style="height: 350px;"></div>
         </div>
         <!-- 第三个部分 -->
         <div class="section3">

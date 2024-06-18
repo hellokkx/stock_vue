@@ -19,10 +19,11 @@ const routes = [
       {path: 'home', name: 'Home', component: HomeView},
       // ---------------------2_User-----------------------------
       {path: 'userList', name: 'UserList', component: () => import('@/views/user/User.vue')},
-      {path: 'addUser', name: 'AddUser', component: () => import('@/views/user/Index.vue')},
+      {path: 'Analysis', name: 'AddUser', component: () => import('@/views/user/Index.vue')},
       //---------------------2_SelfStock--------------------------
       {path: 'stockList', name: 'StockList', component: () => import('@/views/stock/StockList.vue')},
       {path: 'selfSelectStock', name: 'SelfStock', component: () => import('@/views/selfStock/SelfSelectStock.vue')},
+      {path: 'selfSelectStock2', name: 'SelfStock', component: () => import('@/views/selfStock/SelfSelectStock3.vue')},
       {path: 'detail', name: 'Detail', component: () => import('@/views/stock/detail.vue')},
 
       //---------------------2_Strategy--------------------------
@@ -38,6 +39,7 @@ const routes = [
 
       //---------------------2_Predict--------------------------
       {path: 'stockDetail', name: 'stockDetail', component: () => import('@/views/predict/StockDataDetail.vue')},
+      {path: 'predictStock', name: 'predictStock', component: () => import('@/views/predict/PredictStock.vue')},
       {path: 'predictStock', name: 'predictStock', component: () => import('@/views/predict/PredictStock.vue')},
       {path: 'algorithm', name: 'algorithm', component: () => import('@/views/algorithm/userAlgorithm.vue')},
 

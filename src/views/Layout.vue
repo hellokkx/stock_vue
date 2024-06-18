@@ -48,17 +48,10 @@
             <span>首页</span>
           </el-menu-item>
 
-          <el-submenu index="1">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span>大盘指数</span>
-            </template>
-            <el-menu-item index="/addUser">上证指数</el-menu-item>
-            <el-menu-item index="2">深证指数</el-menu-item>
-            <el-menu-item index="3">创业板指数</el-menu-item>
-            <el-menu-item index="4">科创50</el-menu-item>
-          </el-submenu>
-
+          <el-menu-item index="/Analysis">
+            <i class="el-icon-s-home"></i>
+            <span>大盘指数分析</span>
+          </el-menu-item>
 
           <el-submenu index="6">
             <template slot="title">

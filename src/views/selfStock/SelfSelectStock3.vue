@@ -5,7 +5,7 @@
       <el-menu :default-active="activeIndex" style="margin: 0;padding: 0">
         <!-- 收藏夹名称 -->
         <el-menu-item index="1" style="align-items: center;border-bottom: solid 1px red">
-          <span style="font-size: 16px; font-weight: bold;">BOC PAY</span>
+          <span style="font-size: 16px; font-weight: bold;">优质股票</span>
         </el-menu-item>
         <!-- 股票列表 -->
         <el-menu-item v-for="stock in stocks" :key="stock.symbol" :index="'2-' + stock.symbol" @click="selectStock(stock)">
@@ -74,7 +74,7 @@ export default {
   },
   methods: {
     getCollectionStock() {
-      var collectionid= '1';
+      var collectionid= '9';
       getCollectionStock({collectionid}).then(res => {
         if(res.code === 200){
           this.stocks = res.response;
